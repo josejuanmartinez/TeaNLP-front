@@ -20,7 +20,6 @@ export class TrainComponent implements OnInit {
     this.text = newText;
   }
   tokenize() {
-
     this.httpservice.tokenize(this.text).subscribe(
       (data) => {
         if (data.hasOwnProperty('result')) {

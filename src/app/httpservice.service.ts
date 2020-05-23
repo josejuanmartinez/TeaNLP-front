@@ -15,7 +15,7 @@ export class HttpserviceService {
         'Content-Type':  'application/json; charset="utf-8"',
       })
     };
-
+    text = text.replace(/"/g, '\\"');
     const body = JSON.stringify('{"text": \"' + text + '\"}');
     return this.http.post(this.backend + '/tokenize', body, httpOptions);
   }

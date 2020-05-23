@@ -4,6 +4,8 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .centered {text-align: center}
 .indigo-bg {background-color: #dae0e4;}
+.indigo {background-color: #4b67af;}
+
 html,body,#wrapper {
   height:100%;
   margin:0;
@@ -32,4 +34,28 @@ html,body,#wrapper {
   height:90px;
   width:100%;
   background:white;
+}
+
+.va-top {
+ vertical-align: top;
+}
+
+.va-bottom {
+  vertical-align: bottom;
+}
+
+textarea::placeholder {
+  color:grey;
+  font-family: Monaco, "Lucida Console", monospace;
+  font-size:12px;
+}
+
+.placeholder {
+  color:grey;
+  font-family: Monaco, "Lucida Console", monospace;
+  font-size:12px;
+}
+
+.mt-5 {
+  margin-top: 5px;
 }

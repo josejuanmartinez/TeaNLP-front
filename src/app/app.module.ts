@@ -12,6 +12,8 @@ import {MatInputModule} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {HttpserviceService} from './httpservice.service';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import {HttpserviceService} from './httpservice.service';
     MatInputModule,
     FormsModule,
     HttpClientModule,
+    MatIconModule,
+    MatButtonModule,
   ],
   providers: [HttpserviceService],
   bootstrap: [AppComponent]

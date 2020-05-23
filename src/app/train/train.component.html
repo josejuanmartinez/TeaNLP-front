@@ -2,24 +2,23 @@
   <div id="full-height-wrapper-comp">
     <table class="TeaTable">
       <tr class="indigo-bg">
-        <td class="indigo-bg">
+        <td class="indigo-bg va-bottom">
           <label>
-            <textarea placeholder="Insert your text here..." [mat-autosize]="false" (change)="changeInputArea($event.target.value)" [ngModel]="text"></textarea>
+            <textarea placeholder="Insert your text to analyze here..." [mat-autosize]="false" (change)="changeInputArea($event.target.value)" [ngModel]="text"></textarea>
           </label>
+          <div>
+            <button mat-flat-button color="accent" (click)="tokenize()">Analyze & Train</button>
+          </div>
         </td>
       </tr>
       <tr class="indigo-bg">
-        <td class="indigo-bg">
-          <input type="button" value="Process" (click)="tokenize()">
-        </td>
-      </tr>
-      <tr class="indigo-bg">
-        <td class="indigo-bg">
+        <td class="indigo-bg va-top">
           <div class="output">
             <span *ngFor="let token of tokens">
               <mark *ngIf="token !== '\n'" class="token">{{token}}</mark>
               <br *ngIf="token == '\n'">
             </span>
+            <span class="placeholder" *ngIf="tokens === undefined">See your analyzed text here...</span>
           </div>
         </td>
       </tr>
