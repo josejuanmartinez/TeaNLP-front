@@ -1,1 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.centered {text-align: center}
+.indigo-bg {background-color: #dae0e4;}
+html,body,#wrapper {
+  height:100%;
+  margin:0;
+  padding:0;
+}
+#wrapper {
+  position:relative;
+}
+
+#top, #middle, #bottom {
+  position:absolute;
+}
+
+#top {
+  width:100%;
+  background: white;
+}
+#middle {
+  bottom:90px;
+  top:88px;
+  width:100%;
+  background: white;
+}
+#bottom {
+  bottom:0px;
+  height:90px;
+  width:100%;
+  background:white;
+}

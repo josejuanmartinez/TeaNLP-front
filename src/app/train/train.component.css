@@ -1,0 +1,49 @@
+table.TeaTable {
+  width: 100%;
+  text-align:center;
+  border-collapse: collapse;
+  height:100%;
+}
+
+textarea {
+  width: 50%;
+  height: 250px;
+  border-color: indigo;
+  border-style: dotted;
+  border-width: thick;
+}
+
+.output {
+  width: 50%;
+  min-height: 250px;
+  background-color: white;
+  word-wrap: break-word;
+  display: inline-block;
+
+  border-color: indigo;
+  border-style: groove;
+  border-width: thick;
+  text-align: left;
+}
+
+mark {
+  background-color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-width: 1px;
+  border-color: #929eaa;
+  border-style: dotted;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 5px;
+}
+
+#full-height-wrapper {
+  height:100%;
+  width:100%;
+  background-color:#3445af;
+}
+#full-height-wrapper-comp {
+  background-color:#3445af;
+  height: 800px;
+}
