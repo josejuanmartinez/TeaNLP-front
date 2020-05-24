@@ -14,13 +14,19 @@ import {HttpClientModule} from '@angular/common/http';
 import {HttpserviceService} from './httpservice.service';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {ModalModule } from 'ngx-bootstrap/modal';
+import { GraphComponent } from './graph/graph.component';
+import {GraphModule} from '@swimlane/ngx-graph';
+import {TooltipModule} from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
     AppComponent,
     TrainComponent,
     ExtractComponent,
-    AnalyzeComponent
+    AnalyzeComponent,
+    GraphComponent
   ],
   imports: [
     BrowserModule,
@@ -32,6 +38,10 @@ import {MatButtonModule} from '@angular/material/button';
     HttpClientModule,
     MatIconModule,
     MatButtonModule,
+    NgbModule,
+    ModalModule.forRoot(),
+    GraphModule,
+    TooltipModule
   ],
   providers: [HttpserviceService],
   bootstrap: [AppComponent]

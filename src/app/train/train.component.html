@@ -3,20 +3,19 @@
     <table class="TeaTable">
       <tr class="indigo-bg">
         <td class="indigo-bg va-bottom">
-          <label>
             <textarea placeholder="Insert your text to analyze here..." [mat-autosize]="false" (change)="changeInputArea($event.target.value)" [ngModel]="text"></textarea>
-          </label>
-          <div>
-            <button mat-flat-button color="accent" (click)="tokenize()">Analyze & Train</button>
-          </div>
+            <div>
+              <button mat-flat-button color="accent" (click)="preprocess()">Launch!</button>
+            </div>
         </td>
       </tr>
       <tr class="indigo-bg">
         <td class="indigo-bg va-top">
           <div class="output">
             <span *ngFor="let token of tokens">
-              <mark *ngIf="token !== '\n'" class="token">{{token}}</mark>
-              <br *ngIf="token == '\n'">
+              <mark *ngIf="token.ORTH !== '\n' && !token.IS_PUNCT && !token.IS_STOP" class="token" (click)="openModal(content, token.ORDER)">{{token.ORTH}}</mark>
+              <mark *ngIf="token.ORTH !== '\n' && (token.IS_PUNCT || token.IS_STOP)" class="disabled_token" (click)="openModal(content, token.ORDER)">{{token.ORTH}}</mark>
+              <br *ngIf="token.ORTH == '\n'">
             </span>
             <span class="placeholder" *ngIf="tokens === undefined">See your analyzed text here...</span>
           </div>
@@ -25,3 +24,180 @@
     </table>
   </div>
 </div>
+
+<!-- Modal -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Train a token</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <div class="input-group">
+          <table class="w90">
+            <tr>
+              <app-graph [token]="selectedToken"></app-graph>
+            </tr>
+            <tr>
+              <td>
+                <table class="w90">
+                  <tr>
+                    <td>
+                      Token Num:
+                    </td>
+                    <td>
+                      <input class="form-control" disabled="disabled" type="text" value="{{selectedToken.ORDER}}">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Text:
+                    </td>
+                    <td>
+                      <input class="form-control" disabled="disabled" type="text" value="{{selectedToken.ORTH}}">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      Lowercase:
+                    </td>
+                    <td>
+                      <input class="form-control" disabled="disabled" type="text" value="{{selectedToken.LOWER}}">
+                    </td>
+                  </tr>
+
+
+
+                  <tr>
+                    <td>
+                      Spellchecked:
+                    </td>
+                    <td>
+                      <input class="form-control" type="text" value="{{selectedToken.LOWER}}">
+                    </td>
+                  </tr>
+
+
+                  <tr>
+                    <td>
+                      Number?
+                    </td>
+                    <td>
+                      <input type="checkbox" checked="checked" *ngIf="selectedToken.IS_NUM">
+                      <input type="checkbox" *ngIf="!selectedToken.IS_NUM">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Alphabetic?
+                    </td>
+                    <td>
+                      <input type="checkbox" checked="checked" *ngIf="selectedToken.IS_ALPHA">
+                      <input type="checkbox" *ngIf="!selectedToken.IS_ALPHA">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Lemma:
+                    </td>
+                    <td>
+                      <input class="form-control" type="text" value="{{selectedToken.LEMMA}}">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      Root (Stem):
+                    </td>
+                    <td>
+                      <input class="form-control" type="text" value="{{selectedToken.STEM}}">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      POS:
+                    </td>
+                    <td>
+                      <input class="form-control" type="text" value="{{selectedToken.POS}}">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      Hypernyms:
+                    </td>
+                    <td>
+                      <!--
+                      <div class="row">
+                        <div class="col">
+                          <div ngbDropdown class="d-inline-block">
+                            <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Hypernyms</button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                              <button *ngFor="let item of selectedToken.HYPERNYMS" class="dropdown-item">{{item}}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>-->
+                      <span *ngFor="let item of selectedToken.HYPERNYMS">
+                        <input type="checkbox" checked="checked">{{item}}
+                      </span>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      Synonyms:
+                    </td>
+                    <td>
+                      <!--<div class="row">
+                        <div class="col">
+                          <div ngbDropdown class="d-inline-block">
+                            <button class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle>Synonyms</button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                              <button *ngFor="let item of selectedToken.SYNONYMS" class="dropdown-item">{{item}}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>-->
+                      <span *ngFor="let item of selectedToken.SYNONYMS">
+                        <input type="checkbox" checked="checked">{{item}}
+                      </span>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      Antonyms:
+                    </td>
+                    <td>
+                      <!--<div class="row">
+                        <div class="col">
+                          <div ngbDropdown class="d-inline-block">
+                            <button class="btn btn-outline-primary" id="dropdownBasic3" ngbDropdownToggle>Antonyms</button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                              <button *ngFor="let item of selectedToken.ANTONYMS" class="dropdown-item">{{item}}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>-->
+                      <span *ngFor="let item of selectedToken.ANTONYMS">
+                        <input type="checkbox" checked="checked">{{item}}
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="closeModal()">Train</button>
+  </div>
+</ng-template>

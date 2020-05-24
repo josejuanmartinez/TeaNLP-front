@@ -59,3 +59,7 @@ textarea::placeholder {
 .mt-5 {
   margin-top: 5px;
 }
+
+.w90 {
+  width:90%;
+}

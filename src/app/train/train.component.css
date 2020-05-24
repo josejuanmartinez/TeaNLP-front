@@ -7,6 +7,7 @@ table.TeaTable {
 
 textarea {
   width: 50%;
+  max-width: 600px;
   height: 250px;
   border-color: #4b67af;
   border-style: solid;
@@ -16,6 +17,7 @@ textarea {
 .output {
   width: 50%;
   min-height: 250px;
+  max-width: 600px;
   background-color: white;
   word-wrap: break-word;
   display: inline-block;
@@ -26,7 +28,7 @@ textarea {
   text-align: left;
 }
 
-mark {
+mark.token {
   background-color: white;
   margin-left: 5px;
   margin-right: 5px;
@@ -39,6 +41,33 @@ mark {
   line-height: 1.9;
 }
 
+mark.token:hover {
+  background-color: #99b8d7;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-width: 2px;
+  border-color: #929eaa;
+  border-style: groove;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 5px;
+  line-height: 1.9;
+  cursor: pointer;
+}
+
+mark.disabled_token {
+  background-color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-width: 0px;
+  border-style: none;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 5px;
+  line-height: 1.9;
+  cursor: not-allowed;
+}
+
 #full-height-wrapper {
   height:100%;
   width:100%;
@@ -47,4 +76,10 @@ mark {
 #full-height-wrapper-comp {
   background-color:#3445af;
   height: 800px;
+}
+
+.token-modal
+{
+  max-width: 800px !important;
+  width: 800px !important;
 }

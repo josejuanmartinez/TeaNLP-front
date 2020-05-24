@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {HttpserviceService} from '../httpservice.service';
 import {HttpErrorResponse} from '@angular/common/http';
+import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-train',
@@ -8,10 +9,13 @@ import {HttpErrorResponse} from '@angular/common/http';
   styleUrls: ['./train.component.css']
 })
 export class TrainComponent implements OnInit {
-
+  @ViewChild('myModal') myModal;
+  private modalRef: BsModalRef;
   text = '';
   tokens: any;
-  constructor(private httpservice: HttpserviceService) { }
+  selectedToken: any;
+  constructor(private httpservice: HttpserviceService,
+              private modalService: BsModalService) { }
 
   ngOnInit(): void {
   }
@@ -19,8 +23,8 @@ export class TrainComponent implements OnInit {
   changeInputArea(newText: string): void {
     this.text = newText;
   }
-  tokenize() {
-    this.httpservice.tokenize(this.text).subscribe(
+  preprocess() {
+    this.httpservice.preprocess(this.text).subscribe(
       (data) => {
         if (data.hasOwnProperty('result')) {
           this.tokens = data[`result`];
@@ -35,6 +39,22 @@ export class TrainComponent implements OnInit {
       }
     );
 
+  }
+
+  openModal(template: TemplateRef<any>, tokenOrder: string) {
+    this.selectedToken = this.tokens.filter(t => t.ORDER === tokenOrder)[0];
+    const config: ModalOptions = {
+      backdrop: 'static',
+      class: 'modal-dialog-centered modal-lg',
+      keyboard: false,
+      animated: true,
+      ignoreBackdropClick: true,
+    };
+    this.modalRef = this.modalService.show(template, config);
+  }
+
+  closeModal(){
+    this.modalService.hide(1);
   }
 
 }
