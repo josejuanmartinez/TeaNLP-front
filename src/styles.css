@@ -60,6 +60,22 @@ textarea::placeholder {
   margin-top: 5px;
 }
 
-.w90 {
+.w-90 {
   width:90%;
+}
+
+.d-initial {
+  display:initial !important;
+}
+
+.d-none {
+  display: none !important;
+}
+
+.red {
+  color: darkred !important;
+}
+
+.va-tbottom {
+  vertical-align: text-bottom;
 }

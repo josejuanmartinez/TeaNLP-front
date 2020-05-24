@@ -27,177 +27,183 @@
 
 <!-- Modal -->
 <ng-template #content let-modal>
-  <div class="modal-header">
+  <!--<div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Train a token</h4>
     <button type="button" class="close" aria-label="Close" (click)="closeModal()">
       <span aria-hidden="true">&times;</span>
     </button>
-  </div>
+  </div>-->
   <div class="modal-body">
-    <form>
-      <div class="form-group">
-        <div class="input-group">
-          <table class="w90">
-            <tr>
-              <app-graph [token]="selectedToken"></app-graph>
-            </tr>
-            <tr>
-              <td>
-                <table class="w90">
-                  <tr>
-                    <td>
-                      Token Num:
-                    </td>
-                    <td>
-                      <input class="form-control" disabled="disabled" type="text" value="{{selectedToken.ORDER}}">
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Text:
-                    </td>
-                    <td>
-                      <input class="form-control" disabled="disabled" type="text" value="{{selectedToken.ORTH}}">
-                    </td>
-                  </tr>
+    <mat-tab-group mat-align-tabs="center">
+      <mat-tab label="NER">
+        <form>
+          <div class="form-group">
+            <div class="input-group">
+              <table class="w-90">
+                <tr class="centered">
+                  <div class="centered w-50 d-initial font-weight-bolder">Matching entities (uncheck if incorrect):</div>
+                  <br/>
+                  <span class="centered w-50 d-initial" *ngFor="let item of selectedToken.HYPERNYM">
+                <div class="form-check form-check-inline">
+                <input class="form-check-input" id="{{'ner_' + item}}" value="{{item}}" type="checkbox" checked="checked">
+                  <label class="form-check-label" for="{{'ner_' + item}}">{{item}}</label>
+                </div>
+              </span>
+                  <mat-icon class="{{iconNewNerClass}}" aria-hidden="false" aria-label="Add NER entity" (click)="showNewNER()">add_circle_outline</mat-icon>
+                  <mat-form-field class="{{newNerClass}}">
+                    <mat-label>NER</mat-label>
+                    <input [autocomplete]="'off'" matInput placeholder="Ex. Organization" (input)="validateNER($event.target.value);" (keyup.enter)="saveNER($event.target.value);">
+                    <mat-hint *ngIf="!validNer" class="red">{{invalidNerMessage}}</mat-hint>
+                  </mat-form-field>
+                </tr>
+                <tr>
+                  <app-graph [token]="selectedToken"></app-graph>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </form>
 
-                  <tr>
-                    <td>
-                      Lowercase:
-                    </td>
-                    <td>
-                      <input class="form-control" disabled="disabled" type="text" value="{{selectedToken.LOWER}}">
-                    </td>
-                  </tr>
+      </mat-tab>
+      <mat-tab label="Other features">
+        <table class="w-90">
+        <tr>
+          <td>
+            Token Num:
+          </td>
+          <td>
+            <input class="form-control" disabled="disabled" type="text" value="{{selectedToken.ORDER}}">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Text:
+          </td>
+          <td>
+            <input class="form-control" disabled="disabled" type="text" value="{{selectedToken.ORTH}}">
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            Lowercase:
+          </td>
+          <td>
+            <input class="form-control" disabled="disabled" type="text" value="{{selectedToken.LOWER}}">
+          </td>
+        </tr>
 
 
 
-                  <tr>
-                    <td>
-                      Spellchecked:
-                    </td>
-                    <td>
-                      <input class="form-control" type="text" value="{{selectedToken.LOWER}}">
-                    </td>
-                  </tr>
+        <tr>
+          <td>
+            Spellchecked:
+          </td>
+          <td>
+            <input class="form-control" type="text" value="{{selectedToken.LOWER}}">
+          </td>
+        </tr>
 
 
-                  <tr>
-                    <td>
-                      Number?
-                    </td>
-                    <td>
-                      <input type="checkbox" checked="checked" *ngIf="selectedToken.IS_NUM">
-                      <input type="checkbox" *ngIf="!selectedToken.IS_NUM">
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Alphabetic?
-                    </td>
-                    <td>
-                      <input type="checkbox" checked="checked" *ngIf="selectedToken.IS_ALPHA">
-                      <input type="checkbox" *ngIf="!selectedToken.IS_ALPHA">
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Lemma:
-                    </td>
-                    <td>
-                      <input class="form-control" type="text" value="{{selectedToken.LEMMA}}">
-                    </td>
-                  </tr>
+        <tr>
+          <td>
+            Number?
+          </td>
+          <td>
+            <input type="checkbox" checked="checked" *ngIf="selectedToken.IS_NUM">
+            <input type="checkbox" *ngIf="!selectedToken.IS_NUM">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Alphabetic?
+          </td>
+          <td>
+            <input type="checkbox" checked="checked" *ngIf="selectedToken.IS_ALPHA">
+            <input type="checkbox" *ngIf="!selectedToken.IS_ALPHA">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Lemma:
+          </td>
+          <td>
+            <input class="form-control" type="text" value="{{selectedToken.LEMMA}}">
+          </td>
+        </tr>
 
-                  <tr>
-                    <td>
-                      Root (Stem):
-                    </td>
-                    <td>
-                      <input class="form-control" type="text" value="{{selectedToken.STEM}}">
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      POS:
-                    </td>
-                    <td>
-                      <input class="form-control" type="text" value="{{selectedToken.POS}}">
-                    </td>
-                  </tr>
+        <tr>
+          <td>
+            Root (Stem):
+          </td>
+          <td>
+            <input class="form-control" type="text" value="{{selectedToken.STEM}}">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            POS:
+          </td>
+          <td>
+            <input class="form-control" type="text" value="{{selectedToken.POS}}">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Hypernyms:
+          </td>
+          <td>
+            <span *ngFor="let item of selectedToken.HYPERNYM">
+              <input type="checkbox" checked="checked">{{item}}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Synonyms:
+          </td>
+          <td>
+        <!--<div class="row">
+          <div class="col">
+            <div ngbDropdown class="d-inline-block">
+              <button class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle>Synonyms</button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <button *ngFor="let item of selectedToken.SYNONYMS" class="dropdown-item">{{item}}</button>
+              </div>
+            </div>
+          </div>
+        </div>-->
+                  <span *ngFor="let item of selectedToken.SYNONYM">
+                    <input type="checkbox" checked="checked">{{item}}
+                  </span>
+                </td>
+              </tr>
 
-                  <tr>
-                    <td>
-                      Hypernyms:
-                    </td>
-                    <td>
-                      <!--
-                      <div class="row">
-                        <div class="col">
-                          <div ngbDropdown class="d-inline-block">
-                            <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Hypernyms</button>
-                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                              <button *ngFor="let item of selectedToken.HYPERNYMS" class="dropdown-item">{{item}}</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>-->
-                      <span *ngFor="let item of selectedToken.HYPERNYMS">
-                        <input type="checkbox" checked="checked">{{item}}
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      Synonyms:
-                    </td>
-                    <td>
-                      <!--<div class="row">
-                        <div class="col">
-                          <div ngbDropdown class="d-inline-block">
-                            <button class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle>Synonyms</button>
-                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                              <button *ngFor="let item of selectedToken.SYNONYMS" class="dropdown-item">{{item}}</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>-->
-                      <span *ngFor="let item of selectedToken.SYNONYMS">
-                        <input type="checkbox" checked="checked">{{item}}
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      Antonyms:
-                    </td>
-                    <td>
-                      <!--<div class="row">
-                        <div class="col">
-                          <div ngbDropdown class="d-inline-block">
-                            <button class="btn btn-outline-primary" id="dropdownBasic3" ngbDropdownToggle>Antonyms</button>
-                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                              <button *ngFor="let item of selectedToken.ANTONYMS" class="dropdown-item">{{item}}</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>-->
-                      <span *ngFor="let item of selectedToken.ANTONYMS">
+              <tr>
+                <td>
+                  Antonyms:
+                </td>
+                <td>
+        <!--<div class="row">
+          <div class="col">
+            <div ngbDropdown class="d-inline-block">
+              <button class="btn btn-outline-primary" id="dropdownBasic3" ngbDropdownToggle>Antonyms</button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <button *ngFor="let item of selectedToken.ANTONYMS" class="dropdown-item">{{item}}</button>
+              </div>
+            </div>
+          </div>
+        </div>-->
+                      <span *ngFor="let item of selectedToken.ANTONYM">
                         <input type="checkbox" checked="checked">{{item}}
                       </span>
                     </td>
                   </tr>
                 </table>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-    </form>
+        </mat-tab>
+    </mat-tab-group>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="closeModal()">Train</button>
+    <button type="button" class="btn btn-outline-dark" (click)="closeModal()">Accept</button>
   </div>
 </ng-template>

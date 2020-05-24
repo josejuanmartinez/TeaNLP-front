@@ -83,3 +83,7 @@ mark.disabled_token {
   max-width: 800px !important;
   width: 800px !important;
 }
+
+mat-icon {
+  cursor: pointer;
+}

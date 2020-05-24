@@ -28,21 +28,22 @@ import {TooltipModule} from '@swimlane/ngx-charts';
     AnalyzeComponent,
     GraphComponent
   ],
-  imports: [
-    BrowserModule,
-    RouterModule,
-    BrowserAnimationsModule,
-    MatTabsModule,
-    MatInputModule,
-    FormsModule,
-    HttpClientModule,
-    MatIconModule,
-    MatButtonModule,
-    NgbModule,
-    ModalModule.forRoot(),
-    GraphModule,
-    TooltipModule
-  ],
+    imports: [
+        BrowserModule,
+        RouterModule,
+        BrowserAnimationsModule,
+        MatTabsModule,
+        MatInputModule,
+        FormsModule,
+        HttpClientModule,
+        MatIconModule,
+        MatButtonModule,
+        NgbModule,
+        ModalModule.forRoot(),
+        GraphModule,
+        TooltipModule,
+        TooltipModule
+    ],
   providers: [HttpserviceService],
   bootstrap: [AppComponent]
 })
