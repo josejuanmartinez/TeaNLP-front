@@ -16,4 +16,15 @@ export class HttpserviceService {
     const body = JSON.stringify('{"text": \"' + text + '\"}');
     return this.http.post(this.backend + '/preprocess', body, httpOptions);
   }
+
+  save(text: string, token: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json; charset="utf-8"',
+      })
+    };
+    text = text.replace(/"/g, '\\"');
+    const body = JSON.stringify('{"text": \"' + text + '\", "token": ' + JSON.stringify(token) + '}');
+    return this.http.post(this.backend + '/save', body, httpOptions);
+  }
 }

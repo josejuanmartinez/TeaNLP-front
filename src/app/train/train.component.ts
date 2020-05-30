@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {HttpserviceService} from '../httpservice.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
@@ -9,7 +9,9 @@ import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
   styleUrls: ['./train.component.css']
 })
 export class TrainComponent implements OnInit {
-  @ViewChild('myModal') myModal;
+  @ViewChild('content') contentModal;
+  @ViewChild('confirmation') confModal;
+  @Output() alerts = new EventEmitter<any>();
   private modalRef: BsModalRef;
   text = '';
   tokens: any;
@@ -37,9 +39,9 @@ export class TrainComponent implements OnInit {
       },
       (err: HttpErrorResponse) => {
         if (err.error instanceof Error) {
-          console.log('Client-side error occured.');
+          this.alerts.emit({level: 'danger', text: err.status + ' ' + err.statusText});
         } else {
-          console.log('Server-side error occured.');
+          this.alerts.emit({level: 'danger', text: err.status + ' ' +  err.statusText});
         }
       }
     );
@@ -59,7 +61,43 @@ export class TrainComponent implements OnInit {
   }
 
   closeModal(){
-    this.modalService.hide(1);
+    this.modalRef.hide();
+  }
+
+  confirm() {
+    this.modalRef.hide();
+    this.openModal(this.confModal, this.selectedToken.ORDER);
+  }
+
+  closeConfirmation() {
+    this.modalRef.hide();
+    this.openModal(this.contentModal, this.selectedToken.ORDER);
+  }
+
+  save() {
+    this.httpservice.save(this.text, this.selectedToken).subscribe(
+      (data) => {
+        if (data.hasOwnProperty('acknowledged')) {
+          if ('acknowledged' in data && data[`acknowledged`]) {
+            this.alerts.emit({level: 'success', text: 'Graph correctly fine-tuned!'});
+            this.closeModal();
+          } else {
+            let err = 'Server-side error';
+            if ('error' in data) {
+              err = data[`error`];
+            }
+            this.alerts.emit({level: 'danger', text: err});
+          }
+        }
+      },
+      (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          this.alerts.emit({level: 'danger', text: err.status + ' ' + err.statusText});
+        } else {
+          this.alerts.emit({level: 'danger', text: err.status + ' ' +  err.statusText});
+        }
+      }
+    );
   }
 
   showNewNER() {

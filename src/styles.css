@@ -30,7 +30,7 @@ html,body,#wrapper {
   background: white;
 }
 #bottom {
-  bottom:0px;
+  /*bottom:0px;*/
   height:90px;
   width:100%;
   background:white;
@@ -78,4 +78,12 @@ textarea::placeholder {
 
 .va-tbottom {
   vertical-align: text-bottom;
+}
+
+.w-120 {
+  width: 120px;
+}
+
+.d-inline-block {
+  display: inline-block;
 }

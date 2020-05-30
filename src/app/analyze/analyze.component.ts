@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-analyze',
@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AnalyzeComponent implements OnInit {
 
+  @Output() alerts = new EventEmitter<string[]>();
   constructor() { }
 
   ngOnInit(): void {

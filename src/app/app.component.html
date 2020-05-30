@@ -4,12 +4,10 @@
     </div>
   <div id="middle">
     <mat-tab-group mat-align-tabs="center">
-      <mat-tab label="Train"><app-train></app-train></mat-tab>
-      <mat-tab label="Extract"><app-extract></app-extract></mat-tab>
-      <mat-tab label="Analyze"><app-analyze></app-analyze></mat-tab>
+      <mat-tab label="Train"><app-train (alerts)="alert($event)"></app-train></mat-tab>
+      <mat-tab label="Extract"><app-extract (alerts)="alert($event)"></app-extract></mat-tab>
+      <mat-tab label="Analyze"><app-analyze (alerts)="alert($event)"></app-analyze></mat-tab>
     </mat-tab-group>
-  </div>
-  <div id="bottom">
-    <input type="button">
+    <ngx-alerts></ngx-alerts>
   </div>
 </div>

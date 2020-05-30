@@ -12,11 +12,13 @@ export class GraphComponent implements OnInit {
   links: any[] = [];
   wordColor = '#e5ace9';
   featColor = '#76b1e5';
+  embeddingsColor = '#e5e376';
   constructor() { }
 
   ngOnInit(): void {
     this.nodes = [];
-    this.nodes.push({id: 'ORTH', label: this.token.ORTH, color: this.wordColor});
+    this.nodes.push({id: 'ORTH', label: this.token.ORTH, color: this.wordColor},
+      {id: 'EMBEDDINGS', label: 'Embeddings', color: this.embeddingsColor});
     this.links = [];
     for (const key in this.token) {
       if (key in this.token) {

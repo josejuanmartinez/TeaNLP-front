@@ -19,6 +19,9 @@ import {ModalModule } from 'ngx-bootstrap/modal';
 import { GraphComponent } from './graph/graph.component';
 import {GraphModule} from '@swimlane/ngx-graph';
 import {TooltipModule} from '@swimlane/ngx-charts';
+import { FeaturesComponent } from './features/features.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { AlertModule } from 'ngx-alerts';
 
 @NgModule({
   declarations: [
@@ -26,24 +29,27 @@ import {TooltipModule} from '@swimlane/ngx-charts';
     TrainComponent,
     ExtractComponent,
     AnalyzeComponent,
-    GraphComponent
+    GraphComponent,
+    FeaturesComponent
   ],
-    imports: [
-        BrowserModule,
-        RouterModule,
-        BrowserAnimationsModule,
-        MatTabsModule,
-        MatInputModule,
-        FormsModule,
-        HttpClientModule,
-        MatIconModule,
-        MatButtonModule,
-        NgbModule,
-        ModalModule.forRoot(),
-        GraphModule,
-        TooltipModule,
-        TooltipModule
-    ],
+  imports: [
+    BrowserModule,
+    RouterModule,
+    BrowserAnimationsModule,
+    MatTabsModule,
+    MatInputModule,
+    FormsModule,
+    HttpClientModule,
+    MatIconModule,
+    MatButtonModule,
+    NgbModule,
+    ModalModule.forRoot(),
+    GraphModule,
+    TooltipModule,
+    TooltipModule,
+    MatCheckboxModule,
+    AlertModule.forRoot({maxMessages: 5, timeout: 5000, position: 'right'})
+  ],
   providers: [HttpserviceService],
   bootstrap: [AppComponent]
 })
