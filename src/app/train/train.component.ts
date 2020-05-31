@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild} from '@
 import {HttpserviceService} from '../httpservice.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
+import {corpus} from './corpus';
 
 @Component({
   selector: 'app-train',
@@ -13,6 +14,7 @@ export class TrainComponent implements OnInit {
   @ViewChild('confirmation') confModal;
   @Output() alerts = new EventEmitter<any>();
   private modalRef: BsModalRef;
+  docs = corpus;
   text = '';
   tokens: any;
   selectedToken: any;
@@ -25,6 +27,16 @@ export class TrainComponent implements OnInit {
               private modalService: BsModalService) { }
 
   ngOnInit(): void {
+    this.selectDoc();
+  }
+
+  selectDoc(): void {
+    const docNames = this.docs.map(x => x.name);
+    const max = docNames.length - 1;
+    const min = 0;
+    const random = Math.floor(Math.random() * (max - min + 1) + min);
+    const name = docNames[random];
+    this.text = this.docs.filter(x => x.name === name)[0].text;
   }
 
   changeInputArea(newText: string): void {
@@ -35,6 +47,7 @@ export class TrainComponent implements OnInit {
       (data) => {
         if (data.hasOwnProperty('result')) {
           this.tokens = data[`result`];
+          console.log(data[`result`]);
         }
       },
       (err: HttpErrorResponse) => {
@@ -45,11 +58,13 @@ export class TrainComponent implements OnInit {
         }
       }
     );
-
+  }
+  trainable(token: any): boolean {
+    return token.ORTH !== '\n' && !token.IS_PUNCT && !token.IS_STOP;
   }
 
   openModal(template: TemplateRef<any>, tokenOrder: string) {
-    this.selectedToken = this.tokens.filter(t => t.ORDER === tokenOrder)[0];
+    this.selectedToken = this.tokens.filter(t => t.SUBWORDS_START === tokenOrder)[0];
     const config: ModalOptions = {
       backdrop: 'static',
       class: 'modal-dialog-centered modal-lg',

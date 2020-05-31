@@ -2,19 +2,20 @@
   <div id="full-height-wrapper-comp">
     <table class="TeaTable">
       <tr class="indigo-bg">
-        <td class="indigo-bg va-bottom">
-            <textarea maxlength="500" placeholder="Insert your text to analyze here..." [mat-autosize]="false" (change)="changeInputArea($event.target.value)" [ngModel]="text"></textarea>
-            <div>
-              <button mat-flat-button color="accent" (click)="preprocess()">Launch!</button>
-            </div>
+        <td class="indigo-bg va-top">
+          <br/>
+          <textarea maxlength="500" placeholder="Insert your text to analyze here or chose an example from the dropdown above..." [mat-autosize]="false" (change)="changeInputArea($event.target.value)" [ngModel]="text"></textarea>
+          <div>
+            <button mat-flat-button color="accent" (click)="preprocess()">Launch!</button>
+          </div>
         </td>
       </tr>
-      <tr class="indigo-bg">
+      <tr class="indigo-bg" *ngIf="tokens.length > 0">
         <td class="indigo-bg va-top">
           <div class="output">
             <span *ngFor="let token of tokens">
-              <mark *ngIf="token.ORTH !== '\n' && !token.IS_PUNCT && !token.IS_STOP" class="token" (click)="openModal(content, token.ORDER)">{{token.ORTH}}</mark>
-              <mark *ngIf="token.ORTH !== '\n' && (token.IS_PUNCT || token.IS_STOP)" class="disabled_token" (click)="openModal(content, token.ORDER)">{{token.ORTH}}</mark>
+              <mark *ngIf="trainable(token) && token.ORTH !== '\n'" class="token" (click)="openModal(content, token.SUBWORDS_START)">{{token.ORTH}}</mark>
+              <mark *ngIf="!trainable(token) && token.ORTH !== '\n'" class="disabled_token">{{token.ORTH}}</mark>
               <br *ngIf="token.ORTH == '\n'">
             </span>
             <span class="placeholder" *ngIf="tokens === undefined">See your analyzed text here...</span>
