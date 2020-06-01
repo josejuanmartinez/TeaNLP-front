@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {AlertService} from 'ngx-alerts';
+import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,9 @@ import {AlertService} from 'ngx-alerts';
 })
 export class AppComponent {
   title = 'TeaNLP-front';
-  constructor(private alertService: AlertService) {}
+  private modalRef: BsModalRef;
+  @ViewChild('processing') confModal;
+  constructor(private alertService: AlertService, private modalService: BsModalService) {}
   alert(message: any) {
     const level = message.level;
     const text = message.text;
@@ -21,5 +24,18 @@ export class AppComponent {
     } else {
       this.alertService.info(text);
     }
+  }
+  process() {
+    const config: ModalOptions = {
+      backdrop: 'static',
+      class: 'modal-dialog-centered modal-md',
+      keyboard: false,
+      animated: true,
+      ignoreBackdropClick: true,
+    };
+    this.modalRef = this.modalService.show(this.confModal, config);
+  }
+  stopProcess() {
+    this.modalRef.hide();
   }
 }

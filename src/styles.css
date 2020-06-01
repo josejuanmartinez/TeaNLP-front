@@ -92,3 +92,7 @@ textarea::placeholder {
   color: #000000;
   font-weight: bolder;
 }
+
+.top-50 {
+  top: -50px;
+}

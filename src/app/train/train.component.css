@@ -9,9 +9,15 @@ textarea {
   width: 50%;
   max-width: 600px;
   height: 250px;
-  border-color: #4b67af;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  border: None;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 10px 10px 10px 10px;
+  /*border-color: #4b67af;
   border-style: solid;
-  border-width: thick;
+  border-width: thick;*/
 }
 
 .output {
@@ -20,9 +26,14 @@ textarea {
   max-width: 600px;
   background-color: white;
   display: inline-block;
-  border-color: #4b67af;;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding: 10px 10px 10px 10px;
+  /*border-color: #4b67af;;
   border-style: solid;
-  border-width: thick;
+  border-width: thick;*/
   text-align: left;
 }
 

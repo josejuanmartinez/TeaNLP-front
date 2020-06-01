@@ -8,6 +8,8 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 export class ExtractComponent implements OnInit {
 
   @Output() alerts = new EventEmitter<string[]>();
+  @Output() processing = new EventEmitter<any>();
+  @Output() processed = new EventEmitter<any>();
   constructor() { }
 
   ngOnInit(): void {

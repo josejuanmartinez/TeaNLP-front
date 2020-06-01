@@ -13,6 +13,8 @@ export class TrainComponent implements OnInit {
   @ViewChild('content') contentModal;
   @ViewChild('confirmation') confModal;
   @Output() alerts = new EventEmitter<any>();
+  @Output() processing = new EventEmitter();
+  @Output() processed = new EventEmitter();
   private modalRef: BsModalRef;
   docs = corpus;
   text = '';
@@ -43,14 +45,17 @@ export class TrainComponent implements OnInit {
     this.text = newText;
   }
   preprocess() {
+    this.processing.emit();
     this.httpservice.preprocess(this.text).subscribe(
       (data) => {
         if (data.hasOwnProperty('result')) {
           this.tokens = data[`result`];
           console.log(data[`result`]);
+          this.processed.emit();
         }
       },
       (err: HttpErrorResponse) => {
+        this.processed.emit();
         if (err.error instanceof Error) {
           this.alerts.emit({level: 'danger', text: err.status + ' ' + err.statusText});
         } else {
@@ -60,11 +65,11 @@ export class TrainComponent implements OnInit {
     );
   }
   trainable(token: any): boolean {
-    return token.ORTH !== '\n' && !token.IS_PUNCT && !token.IS_STOP;
+    return !token.linguistic_features.is_space && !token.linguistic_features.is_punct && !token.linguistic_features.is_stop;
   }
 
   openModal(template: TemplateRef<any>, tokenOrder: string) {
-    this.selectedToken = this.tokens.filter(t => t.SUBWORDS_START === tokenOrder)[0];
+    this.selectedToken = this.tokens.filter(t => t.linguistic_features.offset.start_merged === tokenOrder)[0];
     const config: ModalOptions = {
       backdrop: 'static',
       class: 'modal-dialog-centered modal-lg',
