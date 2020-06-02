@@ -147,10 +147,29 @@ export class TrainComponent implements OnInit {
       this.invalidNerMessage = 'Only chars allowed';
     }
   }
+
   saveNER(newValue: string) {
     this.validateNER(newValue);
     if (this.validNer) {
       this.hideNewNER();
     }
+  }
+
+  calculateTokenClass(token: any) {
+    if (!this.trainable(token)) {
+      return 'disabled_token';
+    }
+    let custom = 'token';
+    if (token.linguistic_features.pos.startsWith('NN')) {
+      custom = 'noun';
+    } else if (token.linguistic_features.pos.startsWith('VB')) {
+      custom = 'verb';
+    } else if (token.linguistic_features.pos.startsWith('JJ')) {
+      custom = 'adj';
+    } else if (token.linguistic_features.pos.startsWith('RB')) {
+      custom = 'adv';
+    }
+    return custom;
+
   }
 }

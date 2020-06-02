@@ -1,3 +1,58 @@
 svg {
   overflow: auto !important;
 }
+
+.graphborder {
+  border-width: 5px;
+  border-color: #ececec;
+  border-style: solid;
+  display: block;
+}
+
+mark.word {
+  background-color: #e5ace9;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-width: 2px;
+  border-color: #e5ace9;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 5px;
+  line-height: 1.7;
+  display: inline-grid;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+
+mark.statistical {
+  background-color: #eae71e;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-width: 2px;
+  border-color: #eae71e;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 5px;
+  line-height: 1.7;
+  display: inline-grid;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+
+mark.linguistic {
+  background-color: #76b1e5;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-width: 2px;
+  border-color: #76b1e5;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 5px;
+  line-height: 1.7;
+  display: inline-grid;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+

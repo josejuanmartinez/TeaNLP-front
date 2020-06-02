@@ -9,6 +9,7 @@ import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 })
 export class AppComponent {
   title = 'TeaNLP-front';
+  message = '';
   private modalRef: BsModalRef;
   @ViewChild('processing') confModal;
   constructor(private alertService: AlertService, private modalService: BsModalService) {}
@@ -25,7 +26,7 @@ export class AppComponent {
       this.alertService.info(text);
     }
   }
-  process() {
+  process(message: string) {
     const config: ModalOptions = {
       backdrop: 'static',
       class: 'modal-dialog-centered modal-md',
@@ -34,6 +35,7 @@ export class AppComponent {
       ignoreBackdropClick: true,
     };
     this.modalRef = this.modalService.show(this.confModal, config);
+    this.message = message;
   }
   stopProcess() {
     this.modalRef.hide();

@@ -25,7 +25,7 @@ html,body,#wrapper {
 }
 #middle {
   bottom:90px;
-  top:88px;
+  top:120px;
   width:100%;
   background: white;
 }
@@ -70,6 +70,10 @@ textarea::placeholder {
 
 .d-none {
   display: none !important;
+}
+
+.d-block {
+  display: block;
 }
 
 .red {

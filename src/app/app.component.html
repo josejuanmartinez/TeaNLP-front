@@ -1,12 +1,15 @@
 <div id="wrapper">
     <div class="centered" id="top">
-      <img class="centered mt-2" src="/assets/images/newtea.png" height="100px" width="250px" alt="TeaNLP">
+      <img class="centered" src="../assets/images/graphNLP_logo.png" height="100px" alt="TeaNLP">
+      <!--<span class="title">graphNLP</span>-->
+      <br/>
+      <span class="subtitle">Powered by BERT and Neo4j</span>
     </div>
   <div id="middle">
     <mat-tab-group mat-align-tabs="center">
-      <mat-tab label="Train"><app-train (alerts)="alert($event)" (processing)="process()" (processed)="stopProcess()"></app-train></mat-tab>
-      <mat-tab label="Extract"><app-extract (alerts)="alert($event)" (processing)="process()" (processed)="stopProcess()"></app-extract></mat-tab>
-      <mat-tab label="Analyze"><app-analyze (alerts)="alert($event)" (processing)="process()" (processed)="stopProcess()"></app-analyze></mat-tab>
+      <mat-tab label="Train"><app-train (alerts)="alert($event)" (processing)="process('Creating tokens and features graph')" (processed)="stopProcess()"></app-train></mat-tab>
+      <mat-tab label="Extract"><app-extract (alerts)="alert($event)" (processing)="process('extract')" (processed)="stopProcess()"></app-extract></mat-tab>
+      <mat-tab label="Analyze"><app-analyze (alerts)="alert($event)" (processing)="process('analyze')" (processed)="stopProcess()"></app-analyze></mat-tab>
     </mat-tab-group>
     <ngx-alerts></ngx-alerts>
   </div>
@@ -14,7 +17,7 @@
 
 <ng-template #processing let-modal>
   <div class="modal-header">
-    <h2 class="modal-title" id="modal-basic-title">Processing...</h2>
+    <h2 class="modal-title" id="modal-basic-title">{{message}}...</h2>
   </div>
   <div class="modal-body">
     <div class="form-group">

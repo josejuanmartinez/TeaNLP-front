@@ -15,9 +15,7 @@ textarea {
   -moz-border-radius: 10px;
   border-radius: 10px;
   padding: 10px 10px 10px 10px;
-  /*border-color: #4b67af;
-  border-style: solid;
-  border-width: thick;*/
+  font-weight: 100;
 }
 
 .output {
@@ -31,18 +29,17 @@ textarea {
   border-radius: 10px;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding: 10px 10px 10px 10px;
-  /*border-color: #4b67af;;
-  border-style: solid;
-  border-width: thick;*/
+  font-weight: 100;
   text-align: left;
 }
+
 
 mark.token {
   background-color: white;
   margin-left: 5px;
   margin-right: 5px;
   border-width: 2px;
-  border-color: #92c7ff;
+  border-color: #5e6770;
   border-style: dashed;
   padding-left: 2px;
   padding-right: 2px;
@@ -53,12 +50,79 @@ mark.token {
   margin-bottom: 2px;
 }
 
-mark.token:hover {
-  background-color: #92c7ff;
+mark.noun {
+  background-color: white;
   margin-left: 5px;
   margin-right: 5px;
   border-width: 2px;
-  border-color: #92c7ff;
+  border-color: #00e1ff;
+  border-style: dashed;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 5px;
+  line-height: 1.7;
+  display: inline-grid;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+
+mark.verb {
+  background-color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-width: 2px;
+  border-color: #dd80ff;
+  border-style: dashed;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 5px;
+  line-height: 1.7;
+  display: inline-grid;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+mark.adj {
+  background-color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-width: 2px;
+  border-color: #6eb000;
+  border-style: dashed;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 5px;
+  line-height: 1.7;
+  display: inline-grid;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+
+mark.adv {
+  background-color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-width: 2px;
+  border-color: #de0d0d;
+  border-style: dashed;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 5px;
+  line-height: 1.7;
+  display: inline-grid;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+
+mark.token:hover {
+  background-color: #5e6770;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-width: 2px;
+  border-color: #5e6770;
   border-style: dashed;
   padding-left: 2px;
   padding-right: 2px;
@@ -69,6 +133,77 @@ mark.token:hover {
   margin-bottom: 2px;
   cursor: pointer;
 }
+
+mark.noun:hover {
+  background-color: #00e1ff;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-width: 2px;
+  border-color: #00e1ff;
+  border-style: dashed;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 5px;
+  line-height: 1.7;
+  display: inline-grid;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+
+
+mark.adj:hover {
+  background-color: #6eb000;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-width: 2px;
+  border-color: #6eb000;
+  border-style: dashed;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 5px;
+  line-height: 1.7;
+  display: inline-grid;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+
+
+mark.adv:hover {
+  background-color: #de0d0d;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-width: 2px;
+  border-color: #de0d0d;
+  border-style: dashed;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 5px;
+  line-height: 1.7;
+  display: inline-grid;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+
+mark.verb:hover {
+  background-color: #dd80ff;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-width: 2px;
+  border-color: #dd80ff;
+  border-style: dashed;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 5px;
+  line-height: 1.7;
+  display: inline-grid;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+
 
 mark.disabled_token {
   background-color: white;
