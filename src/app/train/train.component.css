@@ -116,7 +116,26 @@ mark.adv {
   margin-bottom: 2px;
 }
 
+mark.ner {
+  -webkit-text-stroke: 0.01px black;
+  color: white;
+  font-weight: bolder;
+  border-width: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
+  line-height: 1.7;
+  display: inline-grid;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  cursor: help;
+  margin-left: 0px;
+  margin-right: 0px;
+  border: none;
+  border-radius: 0px;
+  font-size: 15px;
+}
 
+/*
 mark.token:hover {
   background-color: #5e6770;
   margin-left: 5px;
@@ -203,7 +222,7 @@ mark.verb:hover {
   margin-bottom: 2px;
   cursor: pointer;
 }
-
+*/
 
 mark.disabled_token {
   background-color: white;

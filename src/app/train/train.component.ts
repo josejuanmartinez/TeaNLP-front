@@ -24,6 +24,7 @@ export class TrainComponent implements OnInit {
   validNer = false;
   invalidNerMessage = 'Only chars allowed';
   iconNewNerClass = 'va-tbottom';
+  nerStyles = [];
 
   constructor(private httpservice: HttpserviceService,
               private modalService: BsModalService) { }
@@ -158,18 +159,56 @@ export class TrainComponent implements OnInit {
   calculateTokenClass(token: any) {
     if (!this.trainable(token)) {
       return 'disabled_token';
+    } else if (this.checkIfNer(token)) {
+      return 'ner';
+    } else {
+      let custom = 'token';
+      if (token.linguistic_features.pos.startsWith('NN')) {
+        custom = 'noun';
+      } else if (token.linguistic_features.pos.startsWith('VB')) {
+        custom = 'verb';
+      } else if (token.linguistic_features.pos.startsWith('JJ')) {
+        custom = 'adj';
+      } else if (token.linguistic_features.pos.startsWith('RB')) {
+        custom = 'adv';
+      }
+      return custom;
     }
-    let custom = 'token';
-    if (token.linguistic_features.pos.startsWith('NN')) {
-      custom = 'noun';
-    } else if (token.linguistic_features.pos.startsWith('VB')) {
-      custom = 'verb';
-    } else if (token.linguistic_features.pos.startsWith('JJ')) {
-      custom = 'adj';
-    } else if (token.linguistic_features.pos.startsWith('RB')) {
-      custom = 'adv';
+  }
+  getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
     }
-    return custom;
-
+    return color;
+  }
+  checkIfNer(token: any) {
+    if (!this.trainable(token)) {
+      return null;
+    }
+    const nerTags = token.statistical_features.bert_subwords_original.ner;
+    if (nerTags === undefined || nerTags.length < 1)    {
+      return null;
+    }
+    const ner = nerTags[0];
+    if (ner.indexOf('NOENT') > -1) {
+      return null;
+    }
+    return ner;
+  }
+  calculateTokenStyle(token: any) {
+    const ner = this.checkIfNer(token);
+    if (ner === null) {
+      return '';
+    } else if (!this.checkIfNer(token)) {
+      return '';
+    } else  if (this.nerStyles.hasOwnProperty(ner)) {
+      return this.nerStyles[ner];
+    } else {
+      const color = this.getRandomColor();
+      this.nerStyles[ner] = color;
+      return color;
+    }
   }
 }

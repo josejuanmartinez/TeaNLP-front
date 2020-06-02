@@ -12,12 +12,12 @@
       </tr>
       <tr class="indigo-bg" *ngIf="tokens !== undefined && tokens.length > 0">
         <td class="indigo-bg va-top">
-          <mark class="noun">&nbsp;Noun&nbsp;</mark><mark class="adj">&nbsp;Adjective&nbsp;</mark><mark class="verb">&nbsp;Verb&nbsp;</mark><mark class="adv">&nbsp;Adverb&nbsp;</mark><mark class="token">Other</mark>
+          <!--<mark class="noun">Noun</mark><mark class="adj">&nbsp;Adjective&nbsp;</mark><mark class="verb">&nbsp;Verb&nbsp;</mark><mark class="adv">&nbsp;Adverb&nbsp;</mark><mark class="token">Other</mark>-->
           <br/>
           <div class="output">
             <span *ngFor="let token of tokens">
-              <mark *ngIf="trainable(token)" [class]="calculateTokenClass(token)" (click)="openModal(content, token.linguistic_features.offset.start_merged)">{{token.linguistic_features.orth}}</mark>
-              <mark *ngIf="!trainable(token)" [class]="calculateTokenClass(token)">{{token.linguistic_features.orth}}</mark>
+              <mark *ngIf="trainable(token)" [class]="calculateTokenClass(token)" [ngStyle]="{'background-color': calculateTokenStyle(token)}" (click)="openModal(content, token.linguistic_features.offset.start_merged)">{{token.linguistic_features.orth}}</mark>
+              <mark *ngIf="!trainable(token)" [class]="calculateTokenClass(token)" [ngStyle]="{'background-color': calculateTokenStyle(token)}" >{{token.linguistic_features.orth}}</mark>
               <br *ngIf="token.linguistic_features.orth == '\n'">
             </span>
             <span class="placeholder" *ngIf="tokens === undefined">See your analyzed text here...</span>
