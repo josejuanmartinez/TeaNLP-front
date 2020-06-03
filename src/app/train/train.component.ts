@@ -3,6 +3,7 @@ import {HttpserviceService} from '../httpservice.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 import {corpus} from './corpus';
+import {toInt} from 'ngx-bootstrap/chronos/utils/type-checks';
 
 @Component({
   selector: 'app-train',
@@ -16,6 +17,7 @@ export class TrainComponent implements OnInit {
   @Output() processing = new EventEmitter();
   @Output() processed = new EventEmitter();
   private modalRef: BsModalRef;
+  modalOpen = false;
   docs = corpus;
   text = '';
   tokens: any;
@@ -25,6 +27,7 @@ export class TrainComponent implements OnInit {
   invalidNerMessage = 'Only chars allowed';
   iconNewNerClass = 'va-tbottom';
   nerStyles = [];
+  isNers = [];
 
   constructor(private httpservice: HttpserviceService,
               private modalService: BsModalService) { }
@@ -79,10 +82,12 @@ export class TrainComponent implements OnInit {
       ignoreBackdropClick: true,
     };
     this.modalRef = this.modalService.show(template, config);
+    this.modalOpen = true;
   }
 
   closeModal(){
     this.modalRef.hide();
+    this.modalOpen = false;
   }
 
   confirm() {
@@ -157,10 +162,10 @@ export class TrainComponent implements OnInit {
   }
 
   calculateTokenClass(token: any) {
-    if (!this.trainable(token)) {
-      return 'disabled_token';
-    } else if (this.checkIfNer(token)) {
+    if (this.getNer(token)) {
       return 'ner';
+    } else if (!this.trainable(token)) {
+      return 'disabled_token';
     } else {
       let custom = 'token';
       if (token.linguistic_features.pos.startsWith('NN')) {
@@ -183,10 +188,7 @@ export class TrainComponent implements OnInit {
     }
     return color;
   }
-  checkIfNer(token: any) {
-    if (!this.trainable(token)) {
-      return null;
-    }
+  getNer(token: any) {
     const nerTags = token.statistical_features.bert_subwords_original.ner;
     if (nerTags === undefined || nerTags.length < 1)    {
       return null;
@@ -195,13 +197,33 @@ export class TrainComponent implements OnInit {
     if (ner.indexOf('NOENT') > -1) {
       return null;
     }
-    return ner;
+    return ner.toLowerCase().split('-')[1];
+  }
+  isNerEnd(token: any) {
+    if (this.isNers.length > parseInt(token.linguistic_features.offset.start_merged, 10)) {
+      return this.isNers[token.linguistic_features.offset.start_merged];
+    }
+    let result = false;
+    if (this.getNer(token) == null) {
+      this.isNers.push(result);
+      return result;
+    }
+    const position = token.linguistic_features.offset.start_merged;
+    if (this.tokens.length <= position) {
+      this.isNers.push(result);
+      return result;
+    }
+    //  !== JSON.stringify(token.statistical_features.bert_subwords_original.ner[0]));
+    result = this.tokens[position + 1].statistical_features.bert_subwords_original.ner[0]
+      !== token.statistical_features.bert_subwords_original.ner[0];
+    this.isNers.push(result);
+    return result;
   }
   calculateTokenStyle(token: any) {
-    const ner = this.checkIfNer(token);
+    const ner = this.getNer(token);
     if (ner === null) {
       return '';
-    } else if (!this.checkIfNer(token)) {
+    } else if (!this.getNer(token)) {
       return '';
     } else  if (this.nerStyles.hasOwnProperty(ner)) {
       return this.nerStyles[ner];

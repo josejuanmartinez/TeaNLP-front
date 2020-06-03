@@ -7,24 +7,33 @@
     </div>
   <div id="middle">
     <mat-tab-group mat-align-tabs="center">
-      <mat-tab label="Train"><app-train (alerts)="alert($event)" (processing)="process('Creating tokens and features graph')" (processed)="stopProcess()"></app-train></mat-tab>
-      <mat-tab label="Extract"><app-extract (alerts)="alert($event)" (processing)="process('extract')" (processed)="stopProcess()"></app-extract></mat-tab>
-      <mat-tab label="Analyze"><app-analyze (alerts)="alert($event)" (processing)="process('analyze')" (processed)="stopProcess()"></app-analyze></mat-tab>
+      <mat-tab label="Train"><app-train (alerts)="alert($event)" (processing)="process(['BERT Tokenizer', 'Linguistic Features with NLTK', 'BERT Embeddings', 'BERT NER', 'Neo4J NER'])" (processed)="stopProcess()"></app-train></mat-tab>
+      <mat-tab label="Extract"><app-extract (alerts)="alert($event)" (processing)="process(['extract'])" (processed)="stopProcess()"></app-extract></mat-tab>
+      <mat-tab label="Analyze"><app-analyze (alerts)="alert($event)" (processing)="process(['analyze'])" (processed)="stopProcess()"></app-analyze></mat-tab>
     </mat-tab-group>
     <ngx-alerts></ngx-alerts>
   </div>
 </div>
 
 <ng-template #processing let-modal>
-  <div class="modal-header">
+  <!--<div class="modal-header">
     <h2 class="modal-title" id="modal-basic-title">{{message}}...</h2>
-  </div>
+  </div>-->
   <div class="modal-body">
     <div class="form-group">
       <div class="input-group">
         <table class="w-90">
           <tr class="centered">
-            <img src="../../assets/images/processing.gif" width="450px">
+            <td>
+              <img src="../../assets/images/processing.gif" width="250px">
+            </td>
+          </tr>
+          <tr class="centered">
+            <td>
+              <p class="header-text">Processing</p>
+              <hr/>
+              <p class="header-subtext">...{{message}}...</p>
+            </td>
           </tr>
         </table>
       </div>

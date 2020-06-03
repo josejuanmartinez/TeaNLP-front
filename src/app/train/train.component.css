@@ -34,105 +34,95 @@ textarea {
 }
 
 
-mark.token {
+span.token {
   background-color: white;
-  margin-left: 5px;
-  margin-right: 5px;
-  border-width: 2px;
-  border-color: #5e6770;
-  border-style: dashed;
+  border-bottom-width: 2px;
+  border-bottom-color: #5e6770;
+  border-bottom-style: dashed;
   padding-left: 2px;
   padding-right: 2px;
-  border-radius: 5px;
-  line-height: 1.7;
   display: inline-grid;
-  margin-top: 2px;
-  margin-bottom: 2px;
+  margin: 2px 5px;
+  cursor: pointer;
 }
 
-mark.noun {
+span.noun {
   background-color: white;
-  margin-left: 5px;
-  margin-right: 5px;
-  border-width: 2px;
-  border-color: #00e1ff;
-  border-style: dashed;
+  border-bottom-width: 2px;
+  border-bottom-color: #00e1ff;
+  border-bottom-style: dashed;
   padding-left: 2px;
   padding-right: 2px;
-  border-radius: 5px;
-  line-height: 1.7;
   display: inline-grid;
-  margin-top: 2px;
-  margin-bottom: 2px;
+  margin: 2px 5px;
+  cursor: pointer;
 }
 
 
-mark.verb {
+span.verb {
   background-color: white;
-  margin-left: 5px;
-  margin-right: 5px;
-  border-width: 2px;
-  border-color: #dd80ff;
-  border-style: dashed;
+  border-bottom-width: 2px;
+  border-bottom-color: #dd80ff;
+  border-bottom-style: dashed;
   padding-left: 2px;
   padding-right: 2px;
-  border-radius: 5px;
-  line-height: 1.7;
   display: inline-grid;
-  margin-top: 2px;
-  margin-bottom: 2px;
+  margin: 2px 5px;
+  cursor: pointer;
 }
 
-mark.adj {
+span.adj {
   background-color: white;
-  margin-left: 5px;
-  margin-right: 5px;
-  border-width: 2px;
-  border-color: #6eb000;
-  border-style: dashed;
+  border-bottom-width: 2px;
+  border-bottom-color: #6eb000;
+  border-bottom-style: dashed;
   padding-left: 2px;
   padding-right: 2px;
-  border-radius: 5px;
-  line-height: 1.7;
   display: inline-grid;
-  margin-top: 2px;
-  margin-bottom: 2px;
+  margin: 2px 5px;
+  cursor: pointer;
 }
 
 
-mark.adv {
+span.adv {
   background-color: white;
-  margin-left: 5px;
-  margin-right: 5px;
-  border-width: 2px;
-  border-color: #de0d0d;
-  border-style: dashed;
+  border-bottom-width: 2px;
+  border-bottom-color: #de0d0d;
+  border-bottom-style: dashed;
   padding-left: 2px;
   padding-right: 2px;
-  border-radius: 5px;
-  line-height: 1.7;
   display: inline-grid;
-  margin-top: 2px;
-  margin-bottom: 2px;
+  margin: 2px 5px;
+  cursor: pointer;
 }
 
-mark.ner {
+span.ner {
   -webkit-text-stroke: 0.01px black;
   color: white;
   font-weight: bolder;
-  border-width: 2px;
-  padding-left: 2px;
-  padding-right: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
   line-height: 1.7;
-  display: inline-grid;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  cursor: help;
-  margin-left: 0px;
-  margin-right: 0px;
-  border: none;
-  border-radius: 0px;
+  display: inline-block;
+  margin: 2px 0;
+  border: 2px none;
+  border-radius: 0;
   font-size: 15px;
+  cursor: pointer;
+}
+
+a.nerTag {
+
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 10px;
+  border-color: white;
+  border-style: solid;
+  font-size: x-small;
+  border-width: 2px;
+  vertical-align: text-bottom;
+  margin-left: 5px;
+  cursor: help;
 }
 
 /*
@@ -224,11 +214,11 @@ mark.verb:hover {
 }
 */
 
-mark.disabled_token {
+span.disabled_token {
   background-color: white;
   margin-left: 5px;
   margin-right: 5px;
-  border-width: 0px;
+  border-width: 0;
   border-style: none;
   padding-left: 2px;
   padding-right: 2px;

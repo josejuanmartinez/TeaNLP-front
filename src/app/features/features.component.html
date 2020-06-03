@@ -1,0 +1,103 @@
+<table class="w-90">
+  <tr>
+    <td class="pr-3">
+      <label class="sr-only .col-form-label-sm" for="ORTH">Text</label>
+      <div class="input-group ">
+        <div class="input-group-prepend">
+          <div class="input-group-text  w-120">Text</div>
+        </div>
+        <input class="form-control .form-control-sm" id="ORTH" disabled="disabled" type="text" value="{{token.ORTH}}">
+      </div>
+    </td>
+    <td>
+    <label class="sr-only .col-form-label-sm" for="NORMALIZED">Spellchecked</label>
+    <div class="input-group ">
+      <div class="input-group-prepend">
+        <div class="input-group-text  w-120">Spellchecked</div>
+      </div>
+      <input class="form-control .form-control-sm" id="NORMALIZED" type="text" value="{{token.LOWER}}">
+    </div>
+    </td>
+  </tr>
+  <tr>
+    <td class="pr-3">
+      <div class="input-group-prepend  d-inline-block">
+        <div class="input-group-text w-120">Numeric</div>
+      </div>
+      <mat-checkbox class="ml-2 mr-2" checked="checked" *ngIf="token.IS_NUM"></mat-checkbox>
+      <mat-checkbox class="ml-2 mr-2" *ngIf="!token.IS_NUM"></mat-checkbox>
+    </td>
+    <td>
+      <div class="input-group-prepend  d-inline-block">
+        <div class="input-group-text w-120">Alphabetic</div>
+      </div>
+      <mat-checkbox class="ml-2 mr-2" checked="checked" *ngIf="token.IS_ALPHA"></mat-checkbox>
+      <mat-checkbox class="ml-2 mr-2" *ngIf="!token.IS_ALPHA"></mat-checkbox>
+    </td>
+  </tr>
+  <tr>
+    <td class="pr-3">
+      <label class="sr-only .col-form-label-sm" for="LEMMA">Lemma</label>
+      <div class="input-group ">
+        <div class="input-group-prepend">
+          <div class="input-group-text w-120">Lemma</div>
+        </div>
+        <input class="form-control .form-control-sm" id="LEMMA" type="text" value="{{token.LEMMA}}">
+      </div>
+    </td>
+    <td>
+    <label class="sr-only .col-form-label-sm" for="STEM">Stem</label>
+    <div class="input-group ">
+      <div class="input-group-prepend">
+        <div class="input-group-text w-120">Stem</div>
+      </div>
+      <input class="form-control .form-control-sm" id="STEM" type="text" value="{{token.STEM}}">
+    </div>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <label class="sr-only .col-form-label-sm" for="POS">POS</label>
+      <div class="input-group ">
+        <div class="input-group-prepend">
+          <div class="input-group-text w-120">POS</div>
+        </div>
+        <select name="" id="POS" class="form-control" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
+          <option *ngFor="let item of POS" value="{{item}}" [selected]="selectedPOS === item">{{item}}</option>
+        </select>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <div class="input-group-prepend  d-inline-block">
+        <div class="input-group-text w-120 ">Hypernyms</div>
+      </div>
+      <span *ngFor="let item of token.HYPERNYM">
+        <mat-checkbox class="ml-2 mr-2" checked="checked">{{item}}</mat-checkbox>
+      </span>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <div class="input-group-prepend  d-inline-block">
+        <div class="input-group-text w-120 ">Synonyms</div>
+      </div>
+      <span *ngFor="let item of token.SYNONYM">
+        <mat-checkbox class="ml-2 mr-2" checked="checked">{{item}}</mat-checkbox>
+      </span>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+
+      <div class="input-group-prepend  d-inline-block">
+        <div class="input-group-text w-120">Antonyms</div>
+      </div>
+      <span *ngFor="let item of token.ANTONYM">
+        <mat-checkbox class="ml-2 mr-2" checked="checked">{{item}}</mat-checkbox>
+      </span>
+    </td>
+  </tr>
+</table>

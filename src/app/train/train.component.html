@@ -3,21 +3,24 @@
     <table class="TeaTable">
       <tr class="indigo-bg">
         <td class="indigo-bg">
-          <br/>
-          <textarea maxlength="400" placeholder="Insert your text to analyze here or chose an example from the dropdown above..." [mat-autosize]="false" (change)="changeInputArea($event.target.value)" [ngModel]="text"></textarea>
-          <div>
-            <button mat-flat-button color="accent" class="top-50" (click)="preprocess()">Extract features</button>
-          </div>
+          <span  *ngIf="!modalOpen">
+            <br/>
+            <textarea maxlength="400" placeholder="Insert your text to analyze here or chose an example from the dropdown above..." [mat-autosize]="false" (change)="changeInputArea($event.target.value)" [ngModel]="text"></textarea>
+            <div>
+              <button mat-flat-button color="accent" class="top-50" (click)="preprocess()">Extract features</button>
+            </div>
+          </span>
         </td>
       </tr>
-      <tr class="indigo-bg" *ngIf="tokens !== undefined && tokens.length > 0">
+      <tr class="indigo-bg" *ngIf="tokens !== undefined && tokens.length > 0 && !modalOpen">
         <td class="indigo-bg va-top">
           <!--<mark class="noun">Noun</mark><mark class="adj">&nbsp;Adjective&nbsp;</mark><mark class="verb">&nbsp;Verb&nbsp;</mark><mark class="adv">&nbsp;Adverb&nbsp;</mark><mark class="token">Other</mark>-->
           <br/>
           <div class="output">
-            <span *ngFor="let token of tokens">
-              <mark *ngIf="trainable(token)" [class]="calculateTokenClass(token)" [ngStyle]="{'background-color': calculateTokenStyle(token)}" (click)="openModal(content, token.linguistic_features.offset.start_merged)">{{token.linguistic_features.orth}}</mark>
-              <mark *ngIf="!trainable(token)" [class]="calculateTokenClass(token)" [ngStyle]="{'background-color': calculateTokenStyle(token)}" >{{token.linguistic_features.orth}}</mark>
+            <span *ngFor="let token of tokens" [class]="calculateTokenClass(token)" [ngStyle]="{'background-color': calculateTokenStyle(token)}">
+              <span *ngIf="trainable(token)" (click)="openModal(content, token.linguistic_features.offset.start_merged)">{{token.linguistic_features.orth}}</span>
+              <span *ngIf="!trainable(token)" >{{token.linguistic_features.orth}}</span>
+              <a *ngIf="isNerEnd(token)" class="nerTag">{{getNer(token)}}</a>
               <br *ngIf="token.linguistic_features.orth == '\n'">
             </span>
             <span class="placeholder" *ngIf="tokens === undefined">See your analyzed text here...</span>
@@ -44,16 +47,21 @@
             <div class="input-group">
               <table class="w-90">
                 <tr class="centered">
+                  <div class="centered w-50 d-initial font-weight-bolder">Detected entities</div>
                   <br/>
-                  <div class="centered w-50 d-initial font-weight-bolder">Matching entities (uncheck if incorrect):</div>
+                  <!-- NER -->
+                   <mat-checkbox class="ml-2 mr-2" checked="checked">{{selectedToken.statistical_features.bert_subwords_original.ner[0]}} </mat-checkbox>
                   <br/>
-                <span *ngFor="let item of selectedToken.linguistic_features.tessaurus.hypernyms">
-                  <mat-checkbox class="ml-2 mr-2" checked="checked">{{item}}</mat-checkbox>
-                </span>
+                  <hr/>
+                  <!-- NLTK -->
+                  <div class="centered w-50 d-initial font-weight-bolder">Suggested Entities</div>
+                  <br/>
+                   <mat-checkbox *ngFor="let item of selectedToken.linguistic_features.tessaurus.hypernyms" class="ml-2 mr-2">{{item.toUpperCase()}}</mat-checkbox>
+                  <!-- Neo4J -->
                   <mat-icon class="{{iconNewNerClass}}" aria-hidden="false" aria-label="Add NER entity" (click)="showNewNER()">add_circle_outline</mat-icon>
                   <mat-form-field class="{{newNerClass}}">
                     <mat-label>NER</mat-label>
-                    <input [autocomplete]="'off'" matInput placeholder="Ex. Organization" (input)="validateNER($event.target.value);" (keyup.enter)="saveNER($event.target.value);">
+                    <input [autocomplete]="'off'" matInput placeholder="Ex. ORG" #input (input)="input.value=$event.target.value.toUpperCase(); validateNER($event.target.value);" (keyup.enter)="saveNER($event.target.value);">
                     <mat-hint *ngIf="!validNer" class="red">{{invalidNerMessage}}</mat-hint>
                   </mat-form-field>
                 <hr/>

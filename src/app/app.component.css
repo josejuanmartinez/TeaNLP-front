@@ -11,3 +11,15 @@
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 12px;
 }
+
+.header-text {
+  font-weight: 500;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: large;
+}
+
+.header-subtext {
+  font-weight: 400;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: small;
+}

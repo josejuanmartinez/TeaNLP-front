@@ -10,6 +10,9 @@ import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 export class AppComponent {
   title = 'TeaNLP-front';
   message = '';
+  messages = [];
+  messageIndex = 0;
+  tracking = undefined;
   private modalRef: BsModalRef;
   @ViewChild('processing') confModal;
   constructor(private alertService: AlertService, private modalService: BsModalService) {}
@@ -26,16 +29,31 @@ export class AppComponent {
       this.alertService.info(text);
     }
   }
-  process(message: string) {
+  process(messages: string[]) {
     const config: ModalOptions = {
       backdrop: 'static',
-      class: 'modal-dialog-centered modal-md',
+      class: 'modal-dialog-centered modal-sm',
       keyboard: false,
       animated: true,
       ignoreBackdropClick: true,
     };
     this.modalRef = this.modalService.show(this.confModal, config);
-    this.message = message;
+    this.messages = messages;
+    this.messageIndex = 0;
+    this.setMessage();
+    if (this.messages.length > 0 ) {
+      this.tracking = setInterval(() => {
+        this.setMessage();
+      }, 2500);
+    }
+  }
+  setMessage() {
+    this.message = this.messages[this.messageIndex];
+    this.messageIndex++;
+    if (this.messageIndex >= this.messages.length && this.tracking !== undefined) {
+      clearInterval(this.tracking);
+      this.tracking = undefined;
+    }
   }
   stopProcess() {
     this.modalRef.hide();

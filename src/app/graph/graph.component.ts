@@ -13,9 +13,9 @@ export class GraphComponent implements OnInit {
   selectedWordColor = '#d13ddb';
   wordColor = '#e5ace9';
   linguisticColor = '#1a7bd0';
-  statisticalColor = '#eae71e';
+  statisticalColor = '#87d915';
   linguisticFeatureColor = '#76b1e5';
-  statisticalFeatureColor = '#ffffe0';
+  statisticalFeatureColor = '#b5e569';
 
   constructor() { }
 
@@ -97,13 +97,15 @@ export class GraphComponent implements OnInit {
 
     if (this.token.linguistic_features.meaningful_embedding) {
 
-      if (this.token.statistical_features.bert_subwords_original.meaningful_embedding) {
+      // if (this.token.statistical_features.bert_subwords_original.meaningful_embedding) {
         this.nodes.push({id: 'BERT_CASED', label: 'BERT_CASED',
           color: this.statisticalColor, link: 'BERT_CASED'});
         this.nodes.push({id: 'BERT_CASED_TOKEN', label: this.token.statistical_features.bert_subwords_original.subwords,
           color: this.statisticalColor, link: 'BERT_CASED_TOKEN'});
         this.nodes.push({id: 'BERT_CASED_TOKEN_ROOT', label: this.token.statistical_features.bert_subwords_original.root,
           color: this.wordColor, link: 'BERT_CASED_TOKEN_ROOT'});
+        this.nodes.push({id: 'BERT_CASED_TOKEN_NER', label: this.token.statistical_features.bert_subwords_original.ner[0],
+          color: this.statisticalFeatureColor, link: 'BERT_CASED_TOKEN_NER'});
         this.nodes.push({id: 'BERT_CASED_TOKEN_LENGTH', label: this.token.statistical_features.bert_subwords_original.length,
           color: this.statisticalFeatureColor, link: 'BERT_CASED_TOKEN_LENGTH'});
         this.nodes.push({id: 'BERT_CASED_TOKEN_EMBEDDING', label:  '[0 0 1 ...]',
@@ -114,18 +116,20 @@ export class GraphComponent implements OnInit {
           label: 'HAS_SUBWORDS'});
         this.links.push({id: 'BERT_CASED_TOKEN->BERT_CASED_TOKEN_ROOT', source: 'BERT_CASED_TOKEN', target: 'BERT_CASED_TOKEN_ROOT',
           label: 'HAS_ROOT'});
+        this.links.push({id: 'BERT_CASED_TOKEN->BERT_CASED_TOKEN_NER', source: 'BERT_CASED_TOKEN', target: 'BERT_CASED_TOKEN_NER',
+          label: 'HAS_NER'});
         this.links.push({id: 'BERT_CASED_TOKEN->BERT_CASED_TOKEN_LENGTH', source: 'BERT_CASED_TOKEN', target: 'BERT_CASED_TOKEN_LENGTH',
           label: 'HAS_LENGTH'});
         this.links.push({id: 'BERT_CASED_TOKEN_ROOT->BERT_CASED_TOKEN_EMBEDDING', source: 'BERT_CASED_TOKEN_ROOT',
           target: 'BERT_CASED_TOKEN_EMBEDDING', label: 'HAS_WORD_EMBEDDING'});
-      } else {
-        this.nodes.push({id: 'BERT_CASED', label: 'NO BERT (CASED)',  color: this.statisticalColor, link: 'BERT_CASED'});
-        this.links.push({id: 'STATISTICAL->BERT_CASED', source: 'STATISTICAL_FEATURES',
-          target: 'BERT_CASED', label: 'HAS_BERT_CASED'});
-      }
+      // } else {
+      //  this.nodes.push({id: 'BERT_CASED', label: 'NO BERT (CASED)',  color: this.statisticalColor, link: 'BERT_CASED'});
+      //  this.links.push({id: 'STATISTICAL->BERT_CASED', source: 'STATISTICAL_FEATURES',
+      //    target: 'BERT_CASED', label: 'HAS_BERT_CASED'});
+      // }
 
 
-      if (this.token.statistical_features.bert_subwords_lower.meaningful_embedding) {
+      // if (this.token.statistical_features.bert_subwords_lower.meaningful_embedding) {
         this.nodes.push({id: 'BERT_UNCASED', label: 'BERT_UNCASED',
           color: this.statisticalColor, link: 'BERT_UNCASED'});
         this.nodes.push({id: 'BERT_UNCASED_TOKEN', label: this.token.statistical_features.bert_subwords_lower.subwords,
@@ -146,11 +150,11 @@ export class GraphComponent implements OnInit {
           label: 'HAS_LENGTH'});
         this.links.push({id: 'BERT_UNCASED_TOKEN_ROOT->BERT_UNCASED_TOKEN_EMBEDDING', source: 'BERT_UNCASED_TOKEN_ROOT', target: 'BERT_UNCASED_TOKEN_EMBEDDING',
           label: 'HAS_WORD_EMBEDDING'});
-      } else {
-        this.nodes.push({id: 'BERT_UNCASED', label: 'NO BERT (UNCASED)',  color: this.statisticalColor, link: 'BERT_UNCASED'});
-        this.links.push({id: 'STATISTICAL->BERT_UNCASED', source: 'STATISTICAL_FEATURES',
-          target: 'BERT_UNCASED', label: 'HAS_BERT_UNCASED'});
-      }
+      // } else {
+      //  this.nodes.push({id: 'BERT_UNCASED', label: 'NO BERT (UNCASED)',  color: this.statisticalColor, link: 'BERT_UNCASED'});
+      //  this.links.push({id: 'STATISTICAL->BERT_UNCASED', source: 'STATISTICAL_FEATURES',
+      //    target: 'BERT_UNCASED', label: 'HAS_BERT_UNCASED'});
+      // }
 
     } else {
       this.nodes.push({id: 'MEANINGFUL_EMBEDDING', label: 'NO EMBEDDINGS',
