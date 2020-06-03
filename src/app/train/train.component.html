@@ -7,7 +7,7 @@
             <br/>
             <textarea maxlength="400" placeholder="Insert your text to analyze here or chose an example from the dropdown above..." [mat-autosize]="false" (change)="changeInputArea($event.target.value)" [ngModel]="text"></textarea>
             <div>
-              <button mat-flat-button color="accent" class="top-50" (click)="preprocess()">Extract features</button>
+              <button mat-flat-button color="accent" class="top-50" (click)="preprocess()">Supervise</button>
             </div>
           </span>
         </td>
@@ -41,31 +41,11 @@
   </div>-->
   <div class="modal-body">
     <mat-tab-group mat-align-tabs="center">
-      <mat-tab label="NER">
+      <mat-tab label="View">
         <form>
           <div class="form-group">
             <div class="input-group">
               <table class="w-90">
-                <tr class="centered">
-                  <div class="centered w-50 d-initial font-weight-bolder">Detected entities</div>
-                  <br/>
-                  <!-- NER -->
-                   <mat-checkbox class="ml-2 mr-2" checked="checked">{{selectedToken.statistical_features.bert_subwords_original.ner[0]}} </mat-checkbox>
-                  <br/>
-                  <hr/>
-                  <!-- NLTK -->
-                  <div class="centered w-50 d-initial font-weight-bolder">Suggested Entities</div>
-                  <br/>
-                   <mat-checkbox *ngFor="let item of selectedToken.linguistic_features.tessaurus.hypernyms" class="ml-2 mr-2">{{item.toUpperCase()}}</mat-checkbox>
-                  <!-- Neo4J -->
-                  <mat-icon class="{{iconNewNerClass}}" aria-hidden="false" aria-label="Add NER entity" (click)="showNewNER()">add_circle_outline</mat-icon>
-                  <mat-form-field class="{{newNerClass}}">
-                    <mat-label>NER</mat-label>
-                    <input [autocomplete]="'off'" matInput placeholder="Ex. ORG" #input (input)="input.value=$event.target.value.toUpperCase(); validateNER($event.target.value);" (keyup.enter)="saveNER($event.target.value);">
-                    <mat-hint *ngIf="!validNer" class="red">{{invalidNerMessage}}</mat-hint>
-                  </mat-form-field>
-                <hr/>
-                </tr>
                 <tr>
                   <app-graph [token]="selectedToken"></app-graph>
                 </tr>
@@ -75,7 +55,7 @@
         </form>
 
       </mat-tab>
-      <mat-tab label="Other features">
+      <mat-tab label="Edit">
         <app-features [token]="selectedToken"></app-features>
         </mat-tab>
     </mat-tab-group>

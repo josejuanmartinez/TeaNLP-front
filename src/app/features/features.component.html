@@ -1,4 +1,24 @@
 <table class="w-90">
+  <tr class="centered">
+    <div class="centered w-50 d-initial font-weight-bolder">Detected entities</div>
+    <br/>
+    <!-- NER -->
+    <mat-checkbox class="ml-2 mr-2" checked="checked" *ngIf="token.statistical_features.bert_subwords_original.ner[0].indexOf('NOENT') == -1">{{token.statistical_features.bert_subwords_original.ner[0].split('-')[1]}} </mat-checkbox>
+    <br/>
+    <hr/>
+    <!-- NLTK -->
+    <div class="centered w-50 d-initial font-weight-bolder">Suggested Entities</div>
+    <br/>
+    <mat-checkbox *ngFor="let item of token.linguistic_features.tessaurus.hypernyms" class="ml-2 mr-2">{{item.toUpperCase()}}</mat-checkbox>
+    <!-- Neo4J -->
+    <mat-icon class="{{iconNewNerClass}}" aria-hidden="false" aria-label="Add Entity" (click)="showNewNER()">add_circle_outline</mat-icon>
+    <mat-form-field class="{{newNerClass}}">
+      <mat-label>Entity</mat-label>
+      <input [autocomplete]="'off'" matInput placeholder="Ex. ORG" #input (input)="input.value=$event.target.value.toUpperCase(); validateNER($event.target.value);" (keyup.enter)="saveNER($event.target.value);">
+      <mat-hint *ngIf="!validNer" class="red">{{invalidNerMessage}}</mat-hint>
+    </mat-form-field>
+    <hr/>
+  </tr>
   <tr>
     <td class="pr-3">
       <label class="sr-only .col-form-label-sm" for="ORTH">Text</label>

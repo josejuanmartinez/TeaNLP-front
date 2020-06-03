@@ -45,24 +45,27 @@ export class GraphComponent implements OnInit {
       this.nodes.push({id: 'SYNONYMS', label: 'SYNONYMS', color: this.linguisticColor, link: 'SYNONYMS'});
       this.links.push({id: 'LEMMA->SYNONYMS', source: 'LEMMA', target: 'SYNONYMS', label: 'HAS_SYNONYMS'});
       for (const word of this.token.linguistic_features.tessaurus.synonyms) {
-        this.nodes.push({id: 'SYNONYM_' + word, label: word, color: this.wordColor, link: word});
-        this.links.push({id: 'SYNONYMS->' + word, source: 'SYNONYMS', target: 'SYNONYM_' + word, label: 'HAS_SYNONYM'});
+        const id = word.replace(/ /g, '');
+        this.nodes.push({id: 'SYNONYM_' + id, label: word, color: this.wordColor, link: 'SYNONYM_' + id});
+        this.links.push({id: 'SYNONYMS->' + id, source: 'SYNONYMS', target: 'SYNONYM_' + id, label: 'HAS_SYNONYM'});
       }
     }
     if (this.token.linguistic_features.tessaurus.antonyms.length > 0) {
       this.nodes.push({id: 'ANTONYMS', label: 'ANTONYMS', color: this.linguisticColor, link: 'ANTONYMS'});
       this.links.push({id: 'LEMMA->ANTONYMS', source: 'LEMMA', target: 'ANTONYMS', label: 'HAS_ANTONYMS'});
       for (const word of this.token.linguistic_features.tessaurus.antonyms) {
-        this.nodes.push({id: 'ANTONYM_' + word, label: word, color: this.wordColor, link: word});
-        this.links.push({id: 'ANTONYMS->' + word, source: 'ANTONYMS', target: 'ANTONYM_' + word, label: 'HAS_ANTONYM'});
+        const id = word.replace(/ /g, '');
+        this.nodes.push({id: 'ANTONYM_' + id, label: word, color: this.wordColor, link: 'ANTONYM_' + id});
+        this.links.push({id: 'ANTONYMS->' + id, source: 'ANTONYMS', target: 'ANTONYM_' + id, label: 'HAS_ANTONYM'});
       }
     }
     if (this.token.linguistic_features.tessaurus.hypernyms.length > 0) {
       this.nodes.push({id: 'HYPERNYMS', label: 'HYPERNYMS', color: this.linguisticColor, link: 'HYPERNYMS'});
       this.links.push({id: 'LEMMA->HYPERNYMS', source: 'LEMMA', target: 'HYPERNYMS', label: 'HAS_HYPERNYMS'});
       for (const word of this.token.linguistic_features.tessaurus.hypernyms) {
-        this.nodes.push({id: 'HYPERNYM_' + word, label: word, color: this.wordColor, link: word});
-        this.links.push({id: 'HYPERNYMS->' + word, source: 'HYPERNYMS', target: 'HYPERNYM_' + word, label: 'HAS_HYPERNYM'});
+        const id = word.replace(/ /g, '');
+        this.nodes.push({id: 'HYPERNYM_' + id, label: word, color: this.wordColor, link: 'HYPERNYM_' + id});
+        this.links.push({id: 'HYPERNYMS->' + id, source: 'HYPERNYMS', target: 'HYPERNYM_' + id, label: 'HAS_HYPERNYM'});
       }
     }
     this.links.push({id: 'WORD->LINGUISTIC', source: 'WORD', target: 'LINGUISTIC_FEATURES', label: 'HAS_LINGUISTIC_FEAT'});
@@ -90,8 +93,9 @@ export class GraphComponent implements OnInit {
       this.nodes.push({id: 'SIMILARITY', label: 'SIMILARITY', color: this.statisticalColor, link: 'SIMILARITY'});
       this.links.push({id: 'STATISTICAL->SIMILARITY', source: 'STATISTICAL_FEATURES', target: 'SIMILARITY', label: 'HAS_SIMILARITY'});
       for (const word of this.token.statistical_features.similar_words) {
-        this.nodes.push({id: 'SIMILAR_' + word, label: word, color: this.wordColor, link: word});
-        this.links.push({id: 'SIMILARITY->' + word, source: 'SIMILARITY', target: 'SIMILAR_' + word, label: 'IS_SIMILAR'});
+        const id = word.replace(/ /g, '');
+        this.nodes.push({id: 'SIMILAR_' + id, label: word, color: this.wordColor, link: 'SIMILAR_' + id});
+        this.links.push({id: 'SIMILARITY->' + id, source: 'SIMILARITY', target: 'SIMILAR_' + id, label: 'IS_SIMILAR'});
       }
     }
 

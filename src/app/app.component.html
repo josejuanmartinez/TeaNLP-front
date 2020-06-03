@@ -7,7 +7,7 @@
     </div>
   <div id="middle">
     <mat-tab-group mat-align-tabs="center">
-      <mat-tab label="Train"><app-train (alerts)="alert($event)" (processing)="process(['BERT Tokenizer', 'Linguistic Features with NLTK', 'BERT Embeddings', 'BERT NER', 'Neo4J NER'])" (processed)="stopProcess()"></app-train></mat-tab>
+      <mat-tab label="Supervise"><app-train (alerts)="alert($event)" (processing)="process(['BERT Tokenizer', 'Linguistic Features with NLTK', 'BERT Embeddings', 'BERT NER', 'Neo4J NER'])" (processed)="stopProcess()"></app-train></mat-tab>
       <mat-tab label="Extract"><app-extract (alerts)="alert($event)" (processing)="process(['extract'])" (processed)="stopProcess()"></app-extract></mat-tab>
       <mat-tab label="Analyze"><app-analyze (alerts)="alert($event)" (processing)="process(['analyze'])" (processed)="stopProcess()"></app-analyze></mat-tab>
     </mat-tab-group>

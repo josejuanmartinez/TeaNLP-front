@@ -11,6 +11,10 @@ export class FeaturesComponent implements OnInit {
   @Input() token: any;
 
   selectedPOS = '';
+  iconNewNerClass = 'va-tbottom';
+  newNerClass = 'd-none';
+  validNer = false;
+  invalidNerMessage = 'Min. 5 chars';
 
   POS = ['CC: coordinating conjunction',
     'CD: cardinal digit (one, two, 1)',
@@ -56,4 +60,41 @@ export class FeaturesComponent implements OnInit {
       }
     }
   }
+
+  showNewNER() {
+    this.newNerClass = '';
+    this.iconNewNerClass = 'va-tbottom d-none';
+  }
+
+  hideNewNER() {
+    this.newNerClass = 'd-none';
+  }
+
+
+  validateNER(newValue: string) {
+    const pattern = '^[A-Z]+$';
+    this.validNer = false;
+    if (newValue.length >= 5) {
+      if (newValue.match(pattern) != null && newValue.match(pattern).length > 0) {
+        if (this.token.linguistic_features.tessaurus.hypernyms.filter(t => t.toUpperCase() === newValue.toUpperCase()).length > 0) {
+          this.invalidNerMessage = 'Duplicated NER';
+        } else {
+          this.validNer = true;
+          this.invalidNerMessage = 'Invalid NER';
+        }
+      } else {
+        this.invalidNerMessage = 'Only chars allowed';
+      }
+    } else {
+      this.invalidNerMessage = 'Min. 5 chars';
+    }
+  }
+
+  saveNER(newValue: string) {
+    this.validateNER(newValue);
+    if (this.validNer) {
+      this.hideNewNER();
+    }
+  }
+
 }

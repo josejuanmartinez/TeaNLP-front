@@ -4,8 +4,8 @@ svg {
 
 .graphborder {
   border-width: 5px;
-  border-color: #ececec;
-  border-style: solid;
+  border-color: #bdf1ad;
+  border-style: dotted;
   display: block;
 }
 
