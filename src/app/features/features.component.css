@@ -1,0 +1,10 @@
+.marked {
+  background-color: #e5ace9;
+}
+
+.suggestion {
+  border-bottom: #e9ecef;
+  border-bottom-width: thick;
+  border-bottom-style: solid;
+  padding-top: 10px;
+}

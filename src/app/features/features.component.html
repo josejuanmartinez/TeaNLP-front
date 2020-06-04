@@ -1,23 +1,31 @@
-<table class="w-90">
+<table class="centered w-100">
   <tr class="centered">
+    <td colspan="2">
     <div class="centered w-50 d-initial font-weight-bolder">Detected entities</div>
     <br/>
     <!-- NER -->
     <mat-checkbox class="ml-2 mr-2" checked="checked" *ngIf="token.statistical_features.bert_subwords_original.ner[0].indexOf('NOENT') == -1">{{token.statistical_features.bert_subwords_original.ner[0].split('-')[1]}} </mat-checkbox>
-    <br/>
     <hr/>
-    <!-- NLTK -->
-    <div class="centered w-50 d-initial font-weight-bolder">Suggested Entities</div>
-    <br/>
-    <mat-checkbox *ngFor="let item of token.linguistic_features.tessaurus.hypernyms" class="ml-2 mr-2">{{item.toUpperCase()}}</mat-checkbox>
-    <!-- Neo4J -->
-    <mat-icon class="{{iconNewNerClass}}" aria-hidden="false" aria-label="Add Entity" (click)="showNewNER()">add_circle_outline</mat-icon>
-    <mat-form-field class="{{newNerClass}}">
-      <mat-label>Entity</mat-label>
-      <input [autocomplete]="'off'" matInput placeholder="Ex. ORG" #input (input)="input.value=$event.target.value.toUpperCase(); validateNER($event.target.value);" (keyup.enter)="saveNER($event.target.value);">
-      <mat-hint *ngIf="!validNer" class="red">{{invalidNerMessage}}</mat-hint>
-    </mat-form-field>
-    <hr/>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <!-- NLTK -->
+      <div class="centered w-50 d-initial font-weight-bolder">Suggested Entities</div>
+      <br/>
+      <mat-checkbox *ngFor="let item of token.linguistic_features.tessaurus.hypernyms" class="ml-2 mr-2">{{item.toUpperCase()}}</mat-checkbox>
+      <!-- Neo4J -->
+      <mat-icon class="{{iconNewNerClass}}" aria-hidden="false" aria-label="Add Entity" (click)="showNewNER()">add_circle_outline</mat-icon>
+      <mat-form-field class="{{newNerClass}}">
+        <mat-label>Entity</mat-label>
+        <input [autocomplete]="'off'" matInput placeholder="Ex. ORG" #input (input)="input.value=$event.target.value.toUpperCase(); validateNER($event.target.value);" (keyup.enter)="saveNER($event.target.value);" value="{{nerValue}}">
+        <mat-hint *ngIf="!validNer" class="red">{{invalidNerMessage}}</mat-hint>
+      </mat-form-field>
+      <hr/>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2"> <div class="centered w-50 d-initial font-weight-bolder">Linguistic Features</div></td>
   </tr>
   <tr>
     <td class="pr-3">
@@ -26,33 +34,35 @@
         <div class="input-group-prepend">
           <div class="input-group-text  w-120">Text</div>
         </div>
-        <input class="form-control .form-control-sm" id="ORTH" disabled="disabled" type="text" value="{{token.ORTH}}">
+        <input class="form-control .form-control-sm" id="ORTH" disabled="disabled" type="text"
+               value="{{token.linguistic_features.orth}}">
       </div>
     </td>
     <td>
-    <label class="sr-only .col-form-label-sm" for="NORMALIZED">Spellchecked</label>
+    <label class="sr-only .col-form-label-sm" for="CLEANSED" >Cleansed</label>
     <div class="input-group ">
       <div class="input-group-prepend">
-        <div class="input-group-text  w-120">Spellchecked</div>
+        <div class="input-group-text  w-120">Cleansed</div>
       </div>
-      <input class="form-control .form-control-sm" id="NORMALIZED" type="text" value="{{token.LOWER}}">
+      <input class="form-control .form-control-sm" id="CLEANSED" type="text"
+             value="{{token.linguistic_features.orth}}">
     </div>
     </td>
   </tr>
   <tr>
-    <td class="pr-3">
+    <td class="pr-3 ta-left">
       <div class="input-group-prepend  d-inline-block">
         <div class="input-group-text w-120">Numeric</div>
       </div>
-      <mat-checkbox class="ml-2 mr-2" checked="checked" *ngIf="token.IS_NUM"></mat-checkbox>
-      <mat-checkbox class="ml-2 mr-2" *ngIf="!token.IS_NUM"></mat-checkbox>
+      <mat-checkbox class="ml-2 mr-2" checked="checked" *ngIf="token.linguistic_features.is_num"></mat-checkbox>
+      <mat-checkbox class="ml-2 mr-2" *ngIf="!token.linguistic_features.is_num"></mat-checkbox>
     </td>
-    <td>
+    <td class="ta-left">
       <div class="input-group-prepend  d-inline-block">
         <div class="input-group-text w-120">Alphabetic</div>
       </div>
-      <mat-checkbox class="ml-2 mr-2" checked="checked" *ngIf="token.IS_ALPHA"></mat-checkbox>
-      <mat-checkbox class="ml-2 mr-2" *ngIf="!token.IS_ALPHA"></mat-checkbox>
+      <mat-checkbox class="ml-2 mr-2" checked="checked" *ngIf="token.linguistic_features.is_alpha"></mat-checkbox>
+      <mat-checkbox class="ml-2 mr-2" *ngIf="!token.linguistic_features.is_alpha"></mat-checkbox>
     </td>
   </tr>
   <tr>
@@ -62,7 +72,8 @@
         <div class="input-group-prepend">
           <div class="input-group-text w-120">Lemma</div>
         </div>
-        <input class="form-control .form-control-sm" id="LEMMA" type="text" value="{{token.LEMMA}}">
+        <input class="form-control .form-control-sm" id="LEMMA" type="text"
+               value="{{token.linguistic_features.lemma}}">
       </div>
     </td>
     <td>
@@ -71,7 +82,8 @@
       <div class="input-group-prepend">
         <div class="input-group-text w-120">Stem</div>
       </div>
-      <input class="form-control .form-control-sm" id="STEM" type="text" value="{{token.STEM}}">
+      <input class="form-control .form-control-sm" id="STEM" type="text"
+             value="{{token.linguistic_features.stem}}">
     </div>
     </td>
   </tr>
@@ -89,35 +101,30 @@
     </td>
   </tr>
   <tr>
-    <td colspan="2">
-      <div class="input-group-prepend  d-inline-block">
-        <div class="input-group-text w-120 ">Hypernyms</div>
-      </div>
-      <span *ngFor="let item of token.HYPERNYM">
-        <mat-checkbox class="ml-2 mr-2" checked="checked">{{item}}</mat-checkbox>
-      </span>
+    <td colspan="2"> <div class="centered w-50 d-initial font-weight-bolder">Statistical Features</div></td>
+  </tr>
+  <tr *ngFor="let sentence of generatedSynSentences" class="ta-right">
+    <td colspan="2" class="suggestion ta-right"><span *ngFor="let word of sentence; index as i" [className]="getClassName(i)">
+      {{getText(i, word)}}</span>
+      <button class="btn btn-primary ta-right">Correct</button><button class="btn btn-danger">Wrong</button>
     </td>
   </tr>
-  <tr>
-    <td colspan="2">
-      <div class="input-group-prepend  d-inline-block">
-        <div class="input-group-text w-120 ">Synonyms</div>
-      </div>
-      <span *ngFor="let item of token.SYNONYM">
-        <mat-checkbox class="ml-2 mr-2" checked="checked">{{item}}</mat-checkbox>
-      </span>
+  <tr *ngFor="let sentence of generatedAntSentences"  class="ta-right">
+    <td colspan="2" class="suggestion"><span *ngFor="let word of sentence; index as i" [className]="getClassName(i)">
+      {{getText(i, word)}}</span>
+      <button class="btn btn-primary ta-right">Correct</button><button class="btn btn-danger">Wrong</button>
     </td>
   </tr>
-
-  <tr>
-    <td colspan="2">
-
-      <div class="input-group-prepend  d-inline-block">
-        <div class="input-group-text w-120">Antonyms</div>
-      </div>
-      <span *ngFor="let item of token.ANTONYM">
-        <mat-checkbox class="ml-2 mr-2" checked="checked">{{item}}</mat-checkbox>
-      </span>
+  <tr *ngFor="let sentence of generatedHypSentences"  class="ta-right">
+    <td colspan="2" class="suggestion"><span *ngFor="let word of sentence; index as i;" [className]="getClassName(i)">
+      {{getText(i, word)}}</span>
+      <button class="btn btn-primary ta-right">Correct</button><button class="btn btn-danger">Wrong</button>
+    </td>
+  </tr>
+  <tr *ngFor="let sentence of generatedSimSentences"  class="ta-right">
+    <td colspan="2" class="suggestion"><span *ngFor="let word of sentence; index as i" [className]="getClassName(i)">
+      {{getText(i, word)}}</span>
+      <button class="btn btn-primary ta-right">Correct</button><button class="btn btn-danger">Wrong</button>
     </td>
   </tr>
 </table>

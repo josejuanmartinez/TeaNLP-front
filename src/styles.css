@@ -100,3 +100,19 @@ textarea::placeholder {
 .top-50 {
   top: -50px;
 }
+
+.ta-right {
+  text-align: right;
+}
+
+.ta-center {
+  text-align: center;
+}
+
+.ta-left {
+  text-align: left;
+}
+
+.w-95 {
+  width: 95%;
+}
