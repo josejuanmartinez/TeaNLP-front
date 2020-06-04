@@ -90,18 +90,17 @@ export class TrainComponent implements OnInit {
     this.modalRef.hide();
     this.openModal(this.confModal, this.selectedToken.ORDER);
   }
-
-  closeConfirmation() {
+  /*closeConfirmation() {
     this.modalRef.hide();
     this.openModal(this.contentModal, this.selectedToken.ORDER);
-  }
+  }*/
 
-  save() {
-    this.httpservice.save(this.text, this.selectedToken).subscribe(
+  save(token: any) {
+    this.httpservice.save(token).subscribe(
       (data) => {
         if (data.hasOwnProperty('acknowledged')) {
-          if ('acknowledged' in data && data[`acknowledged`]) {
-            this.alerts.emit({level: 'success', text: 'Graph correctly fine-tuned!'});
+          if ('result' in data && data[`result`] === 'acknowledged') {
+            this.alerts.emit({level: 'success', text: 'Graph correctly supervised!'});
             this.closeModal();
           } else {
             let err = 'Server-side error';

@@ -56,7 +56,7 @@
 
       </mat-tab>
       <mat-tab label="Edit">
-        <app-features [token]="selectedToken"></app-features>
+        <app-features [token]="selectedToken" (cancel)="closeModal()" (save)="save($event)"></app-features>
         </mat-tab>
     </mat-tab-group>
   </div>
@@ -91,10 +91,5 @@
       </div>
     </div>
     </div>
-
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="save()">Save</button>
-    <button type="button" class="btn btn-danger" (click)="closeConfirmation()">Back</button>
-  </div>
 
 </ng-template>

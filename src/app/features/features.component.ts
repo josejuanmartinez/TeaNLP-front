@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -8,15 +8,33 @@ import {Observable} from 'rxjs';
 })
 export class FeaturesComponent implements OnInit {
 
+  SYNONYMS = 'synonyms';
+  ANTONYMS = 'antonyms';
+  HYPERNYMS = 'hypernyms';
+  SIMILAR = 'similar_words';
   @Input() token: any;
+  @Output() save = new EventEmitter<any>();
+  @Output() cancel = new EventEmitter();
 
   selectedPOS = '';
+  cleansed = '';
+  isNum = false;
+  isAlpha = false;
+  lemma = '';
+  stem = '';
+  confirmedNers = [];
+  confirmedSentences = [];
+
   iconNewNerClass = 'va-tbottom';
   newNerClass = 'd-none';
   validNer = false;
   invalidNerMessage = 'Min. 5 chars';
   isEnteringNer = false;
   nerValue = '';
+
+
+  generatedVocabulary = [];
+
   generatedSynSentences = [];
   generatedAntSentences = [];
   generatedHypSentences = [];
@@ -66,6 +84,10 @@ export class FeaturesComponent implements OnInit {
         this.selectedPOS = item;
       }
     }
+    this.generatedVocabulary.push(this.token.linguistic_features.orth);
+    this.generatedVocabulary.push(this.token.linguistic_features.lemma);
+    this.generatedVocabulary.push(this.token.linguistic_features.lower);
+    console.log(this.generatedVocabulary);
     this.generateSentences();
   }
   generateSentences() {
@@ -75,25 +97,50 @@ export class FeaturesComponent implements OnInit {
     this.generatedHypSentences = [];
     this.generatedSimSentences = [];
     for (const syn of this.token.linguistic_features.tessaurus.synonyms) {
+      if (this.generatedVocabulary.indexOf(syn) !== -1) {
+        continue;
+      }
       const sentenceTokens = [...this.token.original_sentence_tokens];
       sentenceTokens[this.position] = syn;
       this.generatedSynSentences.push(sentenceTokens);
+      this.generatedVocabulary.push(syn);
     }
     for (const ant of this.token.linguistic_features.tessaurus.antonyms) {
+      if (this.generatedVocabulary.indexOf(ant) !== -1) {
+        continue;
+      }
       const sentenceTokens = [...this.token.original_sentence_tokens];
       sentenceTokens[this.position] = ant;
       this.generatedAntSentences.push(sentenceTokens);
+      this.generatedVocabulary.push(ant);
     }
     for (const hyp of this.token.linguistic_features.tessaurus.hypernyms) {
+      if (this.generatedVocabulary.indexOf(hyp) !== -1) {
+        continue;
+      }
       const sentenceTokens = [...this.token.original_sentence_tokens];
       sentenceTokens[this.position] = hyp;
       this.generatedHypSentences.push(sentenceTokens);
+      this.generatedVocabulary.push(hyp);
     }
     for (const sim of this.token.statistical_features.similar_words) {
+      if (this.generatedVocabulary.indexOf(sim) !== -1) {
+        continue;
+      }
       const sentenceTokens = [...this.token.original_sentence_tokens];
       sentenceTokens[this.position] = sim;
       this.generatedSimSentences.push(sentenceTokens);
+      this.generatedVocabulary.push(sim);
     }
+  }
+  setCorrect(sentences: any[], tessName: string, s: number, isCorrect: boolean) {
+    const tokenWord = sentences[s][this.position];
+    if (!this.confirmedSentences.hasOwnProperty(tessName)) {
+      this.confirmedSentences.push({id: tessName, values: []});
+    }
+    this.confirmedSentences.filter(t => t.id === tessName)[0].
+    push({id: tessName, word: tokenWord, sentence: sentences[s], correct: isCorrect});
+    sentences.splice(s, 1);
   }
   showNewNER() {
     this.isEnteringNer = true;
@@ -154,5 +201,23 @@ export class FeaturesComponent implements OnInit {
     } else {
       return word + ' ';
     }
+  }
+  saveChanges() {
+    this.token.linguistic_features.pos = this.selectedPOS.split(':')[0];
+    this.token.linguistic_features.lemma = this.lemma;
+    this.token.linguistic_features.stem = this.stem;
+    this.token.linguistic_features.is_num = this.isNum;
+    this.token.linguistic_features.is_alpha = this.isAlpha;
+    this.token.linguistic_features.cleansed = this.cleansed;
+    this.token.linguistic_features.tessaurus.synonyms = this.confirmedSentences[this.SYNONYMS];
+    this.token.linguistic_features.tessaurus.antonyms = this.confirmedSentences[this.ANTONYMS];
+    this.token.linguistic_features.tessaurus.hypernyms = this.confirmedSentences[this.HYPERNYMS];
+    this.token.statistical_features.similar_words = this.confirmedSentences[this.SIMILAR];
+    this.token.statistical_features.bert_subwords_original.ner = this.confirmedNers;
+    console.log(this.token);
+    this.save.emit(this.token);
+  }
+  cancelChanges() {
+    this.cancel.emit();
   }
 }

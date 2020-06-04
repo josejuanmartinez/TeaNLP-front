@@ -17,14 +17,13 @@ export class HttpserviceService {
     return this.http.post(this.backend + '/preprocess', body, httpOptions);
   }
 
-  save(text: string, token: any) {
+  save(token: any) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json; charset="utf-8"',
       })
     };
-    text = text.replace(/"/g, '\\"');
-    const body = JSON.stringify('{"text": \"' + text + '\", "token": ' + JSON.stringify(token) + '}');
+    const body = JSON.stringify('{"token": ' + JSON.stringify(token) + '}');
     return this.http.post(this.backend + '/save', body, httpOptions);
   }
 }

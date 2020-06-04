@@ -44,7 +44,7 @@
       <div class="input-group-prepend">
         <div class="input-group-text  w-120">Cleansed</div>
       </div>
-      <input class="form-control .form-control-sm" id="CLEANSED" type="text"
+      <input class="form-control .form-control-sm" id="CLEANSED" type="text" (input)="this.cleansed = $event.target.value"
              value="{{token.linguistic_features.orth}}">
     </div>
     </td>
@@ -54,15 +54,15 @@
       <div class="input-group-prepend  d-inline-block">
         <div class="input-group-text w-120">Numeric</div>
       </div>
-      <mat-checkbox class="ml-2 mr-2" checked="checked" *ngIf="token.linguistic_features.is_num"></mat-checkbox>
-      <mat-checkbox class="ml-2 mr-2" *ngIf="!token.linguistic_features.is_num"></mat-checkbox>
+      <mat-checkbox class="ml-2 mr-2" checked="checked" (change)="this.isNum = $event.checked" *ngIf="token.linguistic_features.is_num"></mat-checkbox>
+      <mat-checkbox class="ml-2 mr-2" (change)="this.isNum = $event.checked" *ngIf="!token.linguistic_features.is_num"></mat-checkbox>
     </td>
     <td class="ta-left">
       <div class="input-group-prepend  d-inline-block">
         <div class="input-group-text w-120">Alphabetic</div>
       </div>
-      <mat-checkbox class="ml-2 mr-2" checked="checked" *ngIf="token.linguistic_features.is_alpha"></mat-checkbox>
-      <mat-checkbox class="ml-2 mr-2" *ngIf="!token.linguistic_features.is_alpha"></mat-checkbox>
+      <mat-checkbox class="ml-2 mr-2" checked="checked" (change)="this.isAlpha = $event.checked" *ngIf="token.linguistic_features.is_alpha"></mat-checkbox>
+      <mat-checkbox class="ml-2 mr-2" (change)="this.isAlpha = $event.checked" *ngIf="!token.linguistic_features.is_alpha"></mat-checkbox>
     </td>
   </tr>
   <tr>
@@ -72,7 +72,7 @@
         <div class="input-group-prepend">
           <div class="input-group-text w-120">Lemma</div>
         </div>
-        <input class="form-control .form-control-sm" id="LEMMA" type="text"
+        <input class="form-control .form-control-sm" id="LEMMA" type="text" (input)="this.lemma = $event.target.value"
                value="{{token.linguistic_features.lemma}}">
       </div>
     </td>
@@ -82,7 +82,7 @@
       <div class="input-group-prepend">
         <div class="input-group-text w-120">Stem</div>
       </div>
-      <input class="form-control .form-control-sm" id="STEM" type="text"
+      <input class="form-control .form-control-sm" id="STEM" type="text" (input)="this.stem = $event.target.value"
              value="{{token.linguistic_features.stem}}">
     </div>
     </td>
@@ -103,28 +103,36 @@
   <tr>
     <td colspan="2"> <div class="centered w-50 d-initial font-weight-bolder">Statistical Features</div></td>
   </tr>
-  <tr *ngFor="let sentence of generatedSynSentences" class="ta-right">
+  <tr *ngFor="let sentence of generatedSynSentences; index as s" class="ta-right">
     <td colspan="2" class="suggestion ta-right"><span *ngFor="let word of sentence; index as i" [className]="getClassName(i)">
       {{getText(i, word)}}</span>
-      <button class="btn btn-primary ta-right">Correct</button><button class="btn btn-danger">Wrong</button>
+        <button class="btn btn-primary ta-right ml-10 mr-10" (click)="setCorrect(generatedSynSentences,SYNONYMS, s, true);">Correct</button><button class="btn btn-danger" (click)="setCorrect(generatedSynSentences,SYNONYMS, s, false);">Wrong</button>
     </td>
   </tr>
-  <tr *ngFor="let sentence of generatedAntSentences"  class="ta-right">
+  <tr *ngFor="let sentence of generatedAntSentences; index as s"  class="ta-right">
     <td colspan="2" class="suggestion"><span *ngFor="let word of sentence; index as i" [className]="getClassName(i)">
       {{getText(i, word)}}</span>
-      <button class="btn btn-primary ta-right">Correct</button><button class="btn btn-danger">Wrong</button>
+      <button class="btn btn-primary ta-right ml-10 mr-10" (click)="setCorrect(generatedAntSentences,ANTONYMS, s, true);">Correct</button><button class="btn btn-danger" (click)="setCorrect(generatedAntSentences,ANTONYMS, s, false);">Wrong</button>
     </td>
   </tr>
-  <tr *ngFor="let sentence of generatedHypSentences"  class="ta-right">
+  <tr *ngFor="let sentence of generatedHypSentences; index as s"  class="ta-right">
     <td colspan="2" class="suggestion"><span *ngFor="let word of sentence; index as i;" [className]="getClassName(i)">
-      {{getText(i, word)}}</span>
-      <button class="btn btn-primary ta-right">Correct</button><button class="btn btn-danger">Wrong</button>
+      {{getText(i, word)}} </span>
+      <button class="btn btn-primary ta-right ml-10 mr-10" (click)="setCorrect(generatedHypSentences,HYPERNYMS, s, true);">Correct</button><button class="btn btn-danger" (click)="setCorrect(generatedHypSentences,HYPERNYMS, s, false);">Wrong</button>
     </td>
   </tr>
-  <tr *ngFor="let sentence of generatedSimSentences"  class="ta-right">
+  <tr *ngFor="let sentence of generatedSimSentences; index as s"  class="ta-right">
     <td colspan="2" class="suggestion"><span *ngFor="let word of sentence; index as i" [className]="getClassName(i)">
       {{getText(i, word)}}</span>
-      <button class="btn btn-primary ta-right">Correct</button><button class="btn btn-danger">Wrong</button>
+      <button class="btn btn-primary ta-right ml-10 mr-10" (click)="setCorrect(generatedSimSentences,SIMILAR, s, true);">Correct</button><button class="btn btn-danger" (click)="setCorrect(generatedSimSentences,SIMILAR, s, false);">Wrong</button>
     </td>
   </tr>
+
+  <tr class="ta-right">
+    <td colspan="2" class="suggestion">
+      <button type="button" class="btn btn-primary" (click)="saveChanges()">Save</button>
+      <button type="button" class="btn btn-danger" (click)="cancelChanges()">Back</button>
+    </td>
+  </tr>
+
 </table>
