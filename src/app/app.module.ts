@@ -22,6 +22,7 @@ import {TooltipModule} from '@swimlane/ngx-charts';
 import { FeaturesComponent } from './features/features.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { AlertModule } from 'ngx-alerts';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { AlertModule } from 'ngx-alerts';
     ExtractComponent,
     AnalyzeComponent,
     GraphComponent,
-    FeaturesComponent
+    FeaturesComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,7 +49,8 @@ import { AlertModule } from 'ngx-alerts';
     TooltipModule,
     TooltipModule,
     MatCheckboxModule,
-    AlertModule.forRoot({maxMessages: 5, timeout: 5000, position: 'right'})
+    AlertModule.forRoot({maxMessages: 5, timeout: 5000, position: 'right'}),
+    NgxPaginationModule
   ],
   providers: [HttpserviceService],
   bootstrap: [AppComponent]

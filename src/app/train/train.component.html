@@ -7,7 +7,7 @@
             <br/>
             <textarea maxlength="400" placeholder="Insert your text to analyze here or chose an example from the dropdown above..." [mat-autosize]="false" (change)="changeInputArea($event.target.value)" [ngModel]="text"></textarea>
             <div>
-              <button mat-flat-button color="accent" class="top-50" (click)="preprocess()">Supervise</button>
+              <button mat-flat-button color="accent" class="top-50 btn-ok pb-35" (click)="preprocess()">Supervise</button>
             </div>
           </span>
         </td>
@@ -33,13 +33,11 @@
 
 <!-- Modal -->
 <ng-template #content let-modal>
-  <!--<div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Train a token</h4>
-    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+    <!--<h4 class="modal-title" id="modal-basic-title">Train a token</h4>-->
+    <button type="button" class="close mr-2 ta-right" aria-label="Close" (click)="closeModal()">
       <span aria-hidden="true">&times;</span>
     </button>
-  </div>-->
-  <div class="modal-body">
+  <div class="modal-body top-30">
     <mat-tab-group mat-align-tabs="center">
       <mat-tab label="View">
         <form>
@@ -59,10 +57,6 @@
         <app-features [token]="selectedToken" (cancel)="closeModal()" (save)="save($event)"></app-features>
         </mat-tab>
     </mat-tab-group>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="confirm()">Accept</button>
-    <button type="button" class="btn btn-danger" (click)="closeModal()">Cancel</button>
   </div>
 </ng-template>
 

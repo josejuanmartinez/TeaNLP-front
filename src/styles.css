@@ -101,6 +101,10 @@ textarea::placeholder {
   top: -50px;
 }
 
+.top-30 {
+  top: -30px
+}
+
 .ta-right {
   text-align: right;
 }
@@ -123,4 +127,65 @@ textarea::placeholder {
 
 .mr-10 {
   margin-right: 10px;
+}
+
+.btn-ok {
+  min-width: 64px;
+  background-color: #a8dad7 !important;
+  border: none !important;
+  height: 30px !important;
+  font-size: large !important;
+  border-radius: 5px !important;
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif !important;
+  color: rgba(0, 0, 0, 0.46) !important;
+}
+
+.btn-ok:hover {
+  min-width: 64px;
+  background-color: #a8dad7 !important;
+  border: none !important;
+  height: 30px !important;
+  font-size: large !important;
+  border-radius: 5px !important;
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif !important;
+  color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.btn-nok {
+  min-width: 64px;
+  background-color: #ffb380;
+  border: none;
+  width: 75px;
+  height: 30px;
+  font-size: large;
+  border-radius: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: rgba(0, 0, 0, 0.46) !important;
+}
+
+.btn-nok:hover {
+  background-color: #ffb380;
+  border: none;
+  width: 75px;
+  height: 30px;
+  font-size: large;
+  border-radius: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.scale-075{
+  transform: scale(0.75,0.75);
+}
+
+.pb-35 {
+  padding-bottom: 35px !important;
 }

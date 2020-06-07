@@ -4,7 +4,12 @@
     <div class="centered w-50 d-initial font-weight-bolder">Detected entities</div>
     <br/>
     <!-- NER -->
-    <mat-checkbox class="ml-2 mr-2" checked="checked" *ngIf="token.statistical_features.bert_subwords_original.ner[0].indexOf('NOENT') == -1">{{token.statistical_features.bert_subwords_original.ner[0].split('-')[1]}} </mat-checkbox>
+      <mat-checkbox class="ml-2 mr-2" checked="checked" *ngIf="token.statistical_features.bert_subwords_original.ner[0]
+      .indexOf(NOENT) === -1">{{token.statistical_features.bert_subwords_original.ner[0].split('-')[1]}}
+      </mat-checkbox>
+      <span *ngIf="token.statistical_features.bert_subwords_original.ner[0].indexOf('NOENT') !== -1">
+        No entities found
+      </span>
     <hr/>
     </td>
   </tr>
@@ -103,35 +108,78 @@
   <tr>
     <td colspan="2"> <div class="centered w-50 d-initial font-weight-bolder">Statistical Features</div></td>
   </tr>
-  <tr *ngFor="let sentence of generatedSynSentences; index as s" class="ta-right">
-    <td colspan="2" class="suggestion ta-right"><span *ngFor="let word of sentence; index as i" [className]="getClassName(i)">
+  <tr *ngFor="let sentence of generatedSentences | paginate: { itemsPerPage: 5, currentPage: page }; index as s" class="ta-right">
+    <td colspan="2" class="suggestion ta-right"><span *ngFor="let word of sentence.sentenceTokens; index as i" [className]="getClassName(i)">
       {{getText(i, word)}}</span>
-        <button class="btn btn-primary ta-right ml-10 mr-10" (click)="setCorrect(generatedSynSentences,SYNONYMS, s, true);">Correct</button><button class="btn btn-danger" (click)="setCorrect(generatedSynSentences,SYNONYMS, s, false);">Wrong</button>
+      <div class="example-button-container d-inline scale-075">
+        <button mat-mini-fab color="accent" aria-label="Synonym"
+                (click)="setCorrect(sentence.tessaurusGroup, s, true);">
+          <mat-icon>thumb_up</mat-icon>
+        </button>
+        <button mat-mini-fab color="accent" aria-label="Not synonym"
+                (click)="setCorrect(sentence.tessaurusGroup, s, false);">
+          <mat-icon>thumb_down</mat-icon>
+        </button>
+      </div>
     </td>
   </tr>
-  <tr *ngFor="let sentence of generatedAntSentences; index as s"  class="ta-right">
+  <tr class="ta-right">
+    <td colspan="2 ta-right">
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </td>
+  </tr>
+
+  <!--<tr *ngFor="let sentence of generatedAntSentences; index as s"  class="ta-right">
     <td colspan="2" class="suggestion"><span *ngFor="let word of sentence; index as i" [className]="getClassName(i)">
       {{getText(i, word)}}</span>
-      <button class="btn btn-primary ta-right ml-10 mr-10" (click)="setCorrect(generatedAntSentences,ANTONYMS, s, true);">Correct</button><button class="btn btn-danger" (click)="setCorrect(generatedAntSentences,ANTONYMS, s, false);">Wrong</button>
+      <div class="example-button-container d-inline scale-075">
+        <button mat-mini-fab color="accent" aria-label="Antonym"
+                (click)="setCorrect(generatedSynSentences,ANTONYMS, s, true);">
+          <mat-icon>thumb_up</mat-icon>
+        </button>
+        <button mat-mini-fab color="accent" aria-label="Not antonym"
+                (click)="setCorrect(generatedSynSentences,ANTONYMS, s, false);">
+          <mat-icon>thumb_down</mat-icon>
+        </button>
+      </div>
     </td>
   </tr>
   <tr *ngFor="let sentence of generatedHypSentences; index as s"  class="ta-right">
     <td colspan="2" class="suggestion"><span *ngFor="let word of sentence; index as i;" [className]="getClassName(i)">
       {{getText(i, word)}} </span>
-      <button class="btn btn-primary ta-right ml-10 mr-10" (click)="setCorrect(generatedHypSentences,HYPERNYMS, s, true);">Correct</button><button class="btn btn-danger" (click)="setCorrect(generatedHypSentences,HYPERNYMS, s, false);">Wrong</button>
+      <div class="example-button-container d-inline scale-075">
+        <button mat-mini-fab color="accent" aria-label="Hypernym"
+                (click)="setCorrect(generatedSynSentences,HYPERNYMS, s, true);">
+          <mat-icon>thumb_up</mat-icon>
+        </button>
+        <button mat-mini-fab color="accent" aria-label="Not Hypernym"
+                (click)="setCorrect(generatedSynSentences,HYPERNYMS, s, false);">
+          <mat-icon>thumb_down</mat-icon>
+        </button>
+      </div>
     </td>
-  </tr>
+
   <tr *ngFor="let sentence of generatedSimSentences; index as s"  class="ta-right">
-    <td colspan="2" class="suggestion"><span *ngFor="let word of sentence; index as i" [className]="getClassName(i)">
-      {{getText(i, word)}}</span>
-      <button class="btn btn-primary ta-right ml-10 mr-10" (click)="setCorrect(generatedSimSentences,SIMILAR, s, true);">Correct</button><button class="btn btn-danger" (click)="setCorrect(generatedSimSentences,SIMILAR, s, false);">Wrong</button>
+    <td colspan="2" class="suggestion"><span *ngFor="let word of sentence; index as i;" [className]="getClassName(i)">
+      {{getText(i, word)}} </span>
+      <div class="example-button-container d-inline scale-075">
+        <button mat-mini-fab color="accent" aria-label="Similar"
+                (click)="setCorrect(generatedSynSentences,SIMILAR, s, true);">
+          <mat-icon>thumb_up</mat-icon>
+        </button>
+        <button mat-mini-fab color="accent" aria-label="Not similar"
+                (click)="setCorrect(generatedSynSentences,SIMILAR, s, false);">
+          <mat-icon>thumb_down</mat-icon>
+        </button>
+      </div>
     </td>
-  </tr>
+  </tr>-->
 
   <tr class="ta-right">
-    <td colspan="2" class="suggestion">
-      <button type="button" class="btn btn-primary" (click)="saveChanges()">Save</button>
-      <button type="button" class="btn btn-danger" (click)="cancelChanges()">Back</button>
+    <td colspan="2">
+      <br/>
+      <button type="button" class="btn-ok" (click)="saveChanges()">Save</button>
+      <button type="button" class="btn-nok" (click)="cancelChanges()">Back</button>
     </td>
   </tr>
 

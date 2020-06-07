@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-features',
@@ -12,6 +11,7 @@ export class FeaturesComponent implements OnInit {
   ANTONYMS = 'antonyms';
   HYPERNYMS = 'hypernyms';
   SIMILAR = 'similar_words';
+  NOENT = 'O-NOENT';
   @Input() token: any;
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter();
@@ -35,10 +35,9 @@ export class FeaturesComponent implements OnInit {
 
   generatedVocabulary = [];
 
-  generatedSynSentences = [];
-  generatedAntSentences = [];
-  generatedHypSentences = [];
-  generatedSimSentences = [];
+  generatedSentences = [];
+  page = 1;
+
   position = undefined;
 
   POS = ['CC: coordinating conjunction',
@@ -87,60 +86,49 @@ export class FeaturesComponent implements OnInit {
     this.generatedVocabulary.push(this.token.linguistic_features.orth);
     this.generatedVocabulary.push(this.token.linguistic_features.lemma);
     this.generatedVocabulary.push(this.token.linguistic_features.lower);
-    console.log(this.generatedVocabulary);
+
+
+    this.cleansed = this.token.linguistic_features.orth;
+    this.isNum = this.token.linguistic_features.is_num;
+    this.isAlpha = this.token.linguistic_features.is_alpha;
+    this.lemma = this.token.linguistic_features.lemma;
+    this.stem = this.token.linguistic_features.stem;
+
     this.generateSentences();
   }
   generateSentences() {
     this.position = parseInt(this.token.linguistic_features.offset.order_in_sentence, 10);
-    this.generatedSynSentences = [];
-    this.generatedAntSentences = [];
-    this.generatedHypSentences = [];
-    this.generatedSimSentences = [];
-    for (const syn of this.token.linguistic_features.tessaurus.synonyms) {
-      if (this.generatedVocabulary.indexOf(syn) !== -1) {
-        continue;
+    this.generatedSentences = [];
+    const tessaurus = [this.SYNONYMS, this.ANTONYMS, this.HYPERNYMS];
+    for (const group of tessaurus) {
+      for (const word of this.token.linguistic_features.tessaurus[group]) {
+        if (this.generatedVocabulary.indexOf(word) !== -1) {
+          continue;
+        }
+        const sentenceToks = [...this.token.original_sentence_tokens];
+        sentenceToks[this.position] = word;
+        this.generatedSentences.push({sentenceTokens: sentenceToks, tessaurusGroup: group});
+        this.generatedVocabulary.push(word);
       }
-      const sentenceTokens = [...this.token.original_sentence_tokens];
-      sentenceTokens[this.position] = syn;
-      this.generatedSynSentences.push(sentenceTokens);
-      this.generatedVocabulary.push(syn);
-    }
-    for (const ant of this.token.linguistic_features.tessaurus.antonyms) {
-      if (this.generatedVocabulary.indexOf(ant) !== -1) {
-        continue;
-      }
-      const sentenceTokens = [...this.token.original_sentence_tokens];
-      sentenceTokens[this.position] = ant;
-      this.generatedAntSentences.push(sentenceTokens);
-      this.generatedVocabulary.push(ant);
-    }
-    for (const hyp of this.token.linguistic_features.tessaurus.hypernyms) {
-      if (this.generatedVocabulary.indexOf(hyp) !== -1) {
-        continue;
-      }
-      const sentenceTokens = [...this.token.original_sentence_tokens];
-      sentenceTokens[this.position] = hyp;
-      this.generatedHypSentences.push(sentenceTokens);
-      this.generatedVocabulary.push(hyp);
     }
     for (const sim of this.token.statistical_features.similar_words) {
       if (this.generatedVocabulary.indexOf(sim) !== -1) {
         continue;
       }
-      const sentenceTokens = [...this.token.original_sentence_tokens];
-      sentenceTokens[this.position] = sim;
-      this.generatedSimSentences.push(sentenceTokens);
+      const sentenceToks = [...this.token.original_sentence_tokens];
+      sentenceToks[this.position] = sim;
+      this.generatedSentences.push({sentenceTokens: sentenceToks, tessaurusGroup: this.SIMILAR});
       this.generatedVocabulary.push(sim);
     }
   }
-  setCorrect(sentences: any[], tessName: string, s: number, isCorrect: boolean) {
-    const tokenWord = sentences[s][this.position];
-    if (!this.confirmedSentences.hasOwnProperty(tessName)) {
-      this.confirmedSentences.push({id: tessName, values: []});
+  setCorrect(tessGroup: string, s: number, isCorrect: boolean) {
+    const tokenWord = this.generatedSentences[s][this.position];
+    if (!this.confirmedSentences.hasOwnProperty(tessGroup)) {
+      this.confirmedSentences.push({id: tessGroup, values: []});
     }
-    this.confirmedSentences.filter(t => t.id === tessName)[0].
-    push({id: tessName, word: tokenWord, sentence: sentences[s], correct: isCorrect});
-    sentences.splice(s, 1);
+    this.confirmedSentences.filter(t => t.id === tessGroup)[0][`values`].
+    push({word: tokenWord, sentence: this.generatedSentences[s], correct: isCorrect});
+    this.generatedSentences.splice(s, 1);
   }
   showNewNER() {
     this.isEnteringNer = true;
@@ -213,7 +201,7 @@ export class FeaturesComponent implements OnInit {
     this.token.linguistic_features.tessaurus.antonyms = this.confirmedSentences[this.ANTONYMS];
     this.token.linguistic_features.tessaurus.hypernyms = this.confirmedSentences[this.HYPERNYMS];
     this.token.statistical_features.similar_words = this.confirmedSentences[this.SIMILAR];
-    this.token.statistical_features.bert_subwords_original.ner = this.confirmedNers;
+    this.token.statistical_features.bert_subwords_original.ner = this.confirmedNers.length > 0 ? this.confirmedNers : [this.NOENT];
     console.log(this.token);
     this.save.emit(this.token);
   }
