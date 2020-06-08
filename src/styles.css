@@ -189,3 +189,7 @@ textarea::placeholder {
 .pb-35 {
   padding-bottom: 35px !important;
 }
+
+.cursor-na {
+  cursor: not-allowed;
+}

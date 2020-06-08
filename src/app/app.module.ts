@@ -23,6 +23,7 @@ import { FeaturesComponent } from './features/features.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { AlertModule } from 'ngx-alerts';
 import {NgxPaginationModule} from 'ngx-pagination';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import {NgxPaginationModule} from 'ngx-pagination';
     TooltipModule,
     MatCheckboxModule,
     AlertModule.forRoot({maxMessages: 5, timeout: 5000, position: 'right'}),
-    NgxPaginationModule
+    NgxPaginationModule,
+    MatTooltipModule
   ],
   providers: [HttpserviceService],
   bootstrap: [AppComponent]

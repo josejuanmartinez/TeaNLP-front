@@ -88,13 +88,9 @@ export class TrainComponent implements OnInit {
   }
 
   closeModal(){
+    console.log('click');
     this.modalRef.hide();
     this.modalOpen = false;
-  }
-
-  confirm() {
-    this.modalRef.hide();
-    this.openModal(this.confModal, this.selectedToken.ORDER);
   }
 
   save(token: any) {
@@ -157,7 +153,7 @@ export class TrainComponent implements OnInit {
   }
   getNer(token: any) {
     const nerTags = token.statistical_features.bert_subwords_original.ner;
-    if (nerTags === undefined || nerTags.length < 1)    {
+    if (nerTags === undefined || nerTags.length < 1) {
       return null;
     }
     if (nerTags.length === 1 && nerTags[0].indexOf('NOENT') > -1) {
@@ -165,6 +161,24 @@ export class TrainComponent implements OnInit {
     }
     if (nerTags.length > 1) {
       return this.MULTIENT;
+    } else {
+      return nerTags[0].toUpperCase().split('-')[1];
+    }
+  }
+  getListOfNers(token: any) {
+    const nerTags = token.statistical_features.bert_subwords_original.ner;
+    if (nerTags === undefined || nerTags.length < 1) {
+      return 'NO NER found';
+    }
+    if (nerTags.length === 1 && nerTags[0].indexOf('NOENT') > -1) {
+      return 'NO NER found';
+    }
+    if (nerTags.length > 1) {
+      let ners = '';
+      for (const ner of nerTags) {
+        ners += ner.toUpperCase().split('-')[1] + ' ';
+      }
+      return ners;
     } else {
       return nerTags[0].toUpperCase().split('-')[1];
     }

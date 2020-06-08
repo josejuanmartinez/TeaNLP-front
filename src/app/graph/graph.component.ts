@@ -108,8 +108,19 @@ export class GraphComponent implements OnInit {
           color: this.statisticalColor, link: 'BERT_CASED_TOKEN'});
         this.nodes.push({id: 'BERT_CASED_TOKEN_ROOT', label: this.token.statistical_features.bert_subwords_original.root,
           color: this.wordColor, link: 'BERT_CASED_TOKEN_ROOT'});
-        this.nodes.push({id: 'BERT_CASED_TOKEN_NER', label: this.token.statistical_features.bert_subwords_original.ner[0],
-          color: this.statisticalFeatureColor, link: 'BERT_CASED_TOKEN_NER'});
+        if (this.token.statistical_features.bert_subwords_original.ner.length > 0) {
+          for (const ner of this.token.statistical_features.bert_subwords_original.ner) {
+            this.nodes.push({id: 'BERT_CASED_TOKEN_NER_' + ner, label: ner,
+              color: this.statisticalFeatureColor, link: 'BERT_CASED_TOKEN_NER_' + ner});
+            this.links.push({id: 'BERT_CASED_TOKEN->BERT_CASED_TOKEN_NER_' + ner, source: 'BERT_CASED_TOKEN',
+              target: 'BERT_CASED_TOKEN_NER_' + ner, label: 'HAS_NER'});
+          }
+        } else {
+          this.nodes.push({id: 'BERT_CASED_TOKEN_NER', label: '(NO NER)',
+            color: this.statisticalFeatureColor, link: 'BERT_CASED_TOKEN_NER'});
+          this.links.push({id: 'BERT_CASED_TOKEN->BERT_CASED_TOKEN_NER', source: 'BERT_CASED_TOKEN',
+            target: 'BERT_CASED_TOKEN_NER' , label: 'HAS_NER'});
+        }
         this.nodes.push({id: 'BERT_CASED_TOKEN_LENGTH', label: this.token.statistical_features.bert_subwords_original.length,
           color: this.statisticalFeatureColor, link: 'BERT_CASED_TOKEN_LENGTH'});
         this.nodes.push({id: 'BERT_CASED_TOKEN_EMBEDDING', label:  '[0 0 1 ...]',
@@ -120,8 +131,6 @@ export class GraphComponent implements OnInit {
           label: 'HAS_SUBWORDS'});
         this.links.push({id: 'BERT_CASED_TOKEN->BERT_CASED_TOKEN_ROOT', source: 'BERT_CASED_TOKEN', target: 'BERT_CASED_TOKEN_ROOT',
           label: 'HAS_ROOT'});
-        this.links.push({id: 'BERT_CASED_TOKEN->BERT_CASED_TOKEN_NER', source: 'BERT_CASED_TOKEN', target: 'BERT_CASED_TOKEN_NER',
-          label: 'HAS_NER'});
         this.links.push({id: 'BERT_CASED_TOKEN->BERT_CASED_TOKEN_LENGTH', source: 'BERT_CASED_TOKEN', target: 'BERT_CASED_TOKEN_LENGTH',
           label: 'HAS_LENGTH'});
         this.links.push({id: 'BERT_CASED_TOKEN_ROOT->BERT_CASED_TOKEN_EMBEDDING', source: 'BERT_CASED_TOKEN_ROOT',

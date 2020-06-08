@@ -4,10 +4,11 @@
     <div class="centered w-50 d-initial font-weight-bolder">Detected entities</div>
     <br/>
     <!-- NER -->
-      <mat-checkbox class="ml-2 mr-2" checked="checked" *ngIf="token.statistical_features.bert_subwords_original.ner[0]
-      .indexOf(NOENT) === -1">{{token.statistical_features.bert_subwords_original.ner[0].split('-')[1]}}
+      <mat-checkbox class="ml-2 mr-2" checked="checked" *ngIf="token.statistical_features.bert_subwords_original.ner.
+      length > 0">{{token.statistical_features.bert_subwords_original.ner[0].split('-')[1]}}
       </mat-checkbox>
-      <span *ngIf="token.statistical_features.bert_subwords_original.ner[0].indexOf('NOENT') !== -1">
+      <span *ngIf="token.statistical_features.bert_subwords_original.ner.
+      length <= 0">
         No entities found
       </span>
     <hr/>

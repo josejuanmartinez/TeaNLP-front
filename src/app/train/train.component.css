@@ -131,7 +131,11 @@ a.nerTag {
   background: -moz-linear-gradient(70deg, #ffc107  30%, rgba(0,0,0,0) 30%), -moz-linear-gradient(30deg, #63e89e 60%, #ff7ee3 60%);
   background: linear-gradient(70deg, #ffc107  30%, rgba(0,0,0,0) 30%), linear-gradient(30deg, #63e89e 60%, #ff7ee3 60%);
 }
-/*
+
+.close {
+  z-index:100000;
+}
+
 mark.token:hover {
   background-color: #5e6770;
   margin-left: 5px;
@@ -218,7 +222,7 @@ mark.verb:hover {
   margin-bottom: 2px;
   cursor: pointer;
 }
-*/
+
 
 span.disabled_token {
   background-color: white;
