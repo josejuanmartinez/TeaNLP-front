@@ -4,6 +4,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 import {corpus} from './corpus';
 import {toInt} from 'ngx-bootstrap/chronos/utils/type-checks';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-train',
@@ -16,7 +17,9 @@ export class TrainComponent implements OnInit {
   @Output() alerts = new EventEmitter<any>();
   @Output() processing = new EventEmitter();
   @Output() processed = new EventEmitter();
+  MULTIENT = 'MULTIENT';
   private modalRef: BsModalRef;
+  private sanitizer: DomSanitizer;
   modalOpen = false;
   docs = corpus;
   text = '';
@@ -26,7 +29,10 @@ export class TrainComponent implements OnInit {
   isNers = [];
 
   constructor(private httpservice: HttpserviceService,
-              private modalService: BsModalService) { }
+              private modalService: BsModalService,
+              private sanitize: DomSanitizer) {
+    this.sanitizer = sanitize;
+  }
 
   ngOnInit(): void {
     this.selectDoc();
@@ -90,10 +96,6 @@ export class TrainComponent implements OnInit {
     this.modalRef.hide();
     this.openModal(this.confModal, this.selectedToken.ORDER);
   }
-  /*closeConfirmation() {
-    this.modalRef.hide();
-    this.openModal(this.contentModal, this.selectedToken.ORDER);
-  }*/
 
   save(token: any) {
     this.httpservice.save(token).subscribe(
@@ -124,7 +126,11 @@ export class TrainComponent implements OnInit {
 
   calculateTokenClass(token: any) {
     if (this.getNer(token)) {
-      return 'ner';
+      let classStyle = 'ner';
+      if (this.getNer(token) ===  this.MULTIENT) {
+        classStyle += ' multient';
+      }
+      return classStyle;
     } else if (!this.trainable(token)) {
       return 'disabled_token';
     } else {
@@ -154,11 +160,14 @@ export class TrainComponent implements OnInit {
     if (nerTags === undefined || nerTags.length < 1)    {
       return null;
     }
-    const ner = nerTags[0];
-    if (ner.indexOf('NOENT') > -1) {
+    if (nerTags.length === 1 && nerTags[0].indexOf('NOENT') > -1) {
       return null;
     }
-    return ner.toUpperCase().split('-')[1];
+    if (nerTags.length > 1) {
+      return this.MULTIENT;
+    } else {
+      return nerTags[0].toUpperCase().split('-')[1];
+    }
   }
   isNerEnd(token: any) {
     if (this.isNers.length > parseInt(token.linguistic_features.offset.start_merged, 10)) {
@@ -186,12 +195,13 @@ export class TrainComponent implements OnInit {
       return '';
     } else if (!this.getNer(token)) {
       return '';
-    } else  if (this.nerStyles.hasOwnProperty(ner)) {
+    } else if (ner === this.MULTIENT) {
+      return '';
+    } else if (this.nerStyles.hasOwnProperty(ner)) {
       return this.nerStyles[ner];
     } else {
-      const color = this.getRandomColor();
-      this.nerStyles[ner] = color;
-      return color;
+        this.nerStyles[ner] = this.getRandomColor();
+        return this.nerStyles[ner];
+      }
     }
-  }
 }

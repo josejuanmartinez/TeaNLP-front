@@ -17,7 +17,7 @@
           <!--<mark class="noun">Noun</mark><mark class="adj">&nbsp;Adjective&nbsp;</mark><mark class="verb">&nbsp;Verb&nbsp;</mark><mark class="adv">&nbsp;Adverb&nbsp;</mark><mark class="token">Other</mark>-->
           <br/>
           <div class="output">
-            <span *ngFor="let token of tokens" [class]="calculateTokenClass(token)" [ngStyle]="{'background-color': calculateTokenStyle(token)}">
+            <span *ngFor="let token of tokens" [class]="calculateTokenClass(token)" [ngStyle]="{background: calculateTokenStyle(token)}">
               <span *ngIf="trainable(token)" (click)="openModal(content, token.linguistic_features.offset.start_merged)">{{token.linguistic_features.orth}}</span>
               <span *ngIf="!trainable(token)" >{{token.linguistic_features.orth}}</span>
               <a *ngIf="isNerEnd(token)" class="nerTag">{{getNer(token)}}</a>
